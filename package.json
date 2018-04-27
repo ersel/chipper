@@ -1,0 +1,30 @@
+{
+  "name": "chipper",
+  "version": "0.0.1",
+  "description": "A static analysis tool for JavaScript which examines surface area of ES6 and CommonJS modules throughout your codebase",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest .",
+    "lint": "eslint . --fix -c .eslintrc --ignore-path .gitignore",
+    "precommit": "lint",
+    "prepush": "test"
+  },
+  "author": "Ersel Aker",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "husky": "^0.14.3",
+    "jest": "^22.4.3",
+    "prettier": "^1.12.1"
+  },
+  "dependencies": {
+    "acorn": "^5.5.3",
+    "caporal": "^0.10.0",
+    "glob": "^7.1.2",
+    "ramda": "^0.25.0"
+  }
+}
