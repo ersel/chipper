@@ -6,8 +6,8 @@
   "scripts": {
     "test": "jest .",
     "lint": "eslint . --fix -c .eslintrc --ignore-path .gitignore",
-    "precommit": "lint",
-    "prepush": "test"
+    "precommit": "yarn lint",
+    "prepush": "yarn test"
   },
   "author": "Ersel Aker",
   "license": "MIT",
@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "acorn": "^5.5.3",
+    "acorn-jsx": "^4.1.1",
+    "acorn5-object-spread": "^5.1.2",
     "caporal": "^0.10.0",
     "glob": "^7.1.2",
     "ramda": "^0.25.0"
