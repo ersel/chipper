@@ -1,7 +1,7 @@
 {
   "name": "chipper",
   "version": "0.0.1",
-  "description": "A static analysis tool for JavaScript which examines surface area of ES6 and CommonJS modules throughout your codebase",
+  "description": "A static analysis tool for JavaScript which examines surface area of ES6 modules throughout your codebase",
   "main": "index.js",
   "scripts": {
     "test": "jest .",
