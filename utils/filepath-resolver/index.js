@@ -7,11 +7,14 @@ const resolvePathWithoutExtension = ({
 	importedPath,
 	isDirectory,
 	isRelativePath,
-	isNodeModulesDependency
+	isNodeModulesDependency,
+	isAliasedImport
 }) => {
+	const useBasePath =
+		isRelativePath || isNodeModulesDependency || isAliasedImport;
 	const potentialPaths = extensions.map(ext =>
 		path.join(
-			isRelativePath || isNodeModulesDependency ? basePath : '',
+			useBasePath ? basePath : '',
 			`${importedPath}${isDirectory ? 'index' : ''}.${ext}`
 		)
 	);
@@ -21,14 +24,15 @@ const resolvePathWithoutExtension = ({
 		return fs.existsSync(testPath);
 	});
 	if (foundImportedModule) return filePath;
-	throw new Error(`Could not resolve import`);
+	return `Unable to import: ${importedPath}`;
 };
 
 const resolveFilePath = ({
 	importedPath,
 	pathOfImportingModule,
 	projectRootPath,
-	extensions
+	extensions,
+	aliases = {}
 }) => {
 	let isRelativePath = false;
 	let isAbsolutePath = false;
@@ -73,6 +77,38 @@ const resolveFilePath = ({
 			importedPath,
 			isDirectory,
 			isRelativePath
+		});
+	}
+
+	// aliased modules
+	const aliasedNames = Object.keys(aliases);
+	let importedPathWithAliasResolved;
+	let aliasUsed;
+	const isAliasedImport = aliasedNames.some(alias => {
+		aliasUsed = alias;
+		return importedPath.startsWith(alias);
+	});
+	if (isAliasedImport) {
+		importedPathWithAliasResolved = importedPath.replace(aliasUsed, '');
+		if (importedPathWithAliasResolved.startsWith('/')) {
+			importedPathWithAliasResolved = `.${importedPathWithAliasResolved}`;
+		}
+		if (importedPathWithAliasResolved === '') {
+			isDirectory = true;
+			importedPathWithAliasResolved = './';
+		}
+		const aliasPath = aliases[aliasUsed];
+
+		if (endsWithExtension) {
+			return path.resolve(aliasPath, importedPathWithAliasResolved);
+		}
+		return resolvePathWithoutExtension({
+			extensions,
+			basePath: aliasPath,
+			importedPath: importedPathWithAliasResolved,
+			isDirectory,
+			isRelativePath,
+			isAliasedImport
 		});
 	}
 

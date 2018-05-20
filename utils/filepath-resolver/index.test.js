@@ -153,11 +153,90 @@ describe('Resolves full path to a module', () => {
 		expect(resolvedPath).toEqual(expectedPath);
 	});
 
+	it('should resolve modules which are aliased and have extension', () => {
+		const importedPath = 'my-aliased-module/index.js';
+		const aliases = {
+			'my-aliased-module': `${projectRootPath}/__fixtures__/es6`
+		};
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			projectRootPath,
+			aliases,
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+
+		const expectedPath = path.resolve(
+			projectRootPath,
+			`./__fixtures__/es6/index.js`
+		);
+
+		expect(resolvedPath).toEqual(expectedPath);
+	});
+
+	it('should resolve modules which are aliased and do not have extension', () => {
+		const importedPath = 'my-aliased-module/directory/child';
+		const aliases = {
+			'my-aliased-module': `${projectRootPath}/__fixtures__/es6`
+		};
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			projectRootPath,
+			aliases,
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+
+		const expectedPath = path.resolve(
+			projectRootPath,
+			`./__fixtures__/es6/directory/child.js`
+		);
+
+		expect(resolvedPath).toEqual(expectedPath);
+	});
+
+	it('should resolve modules which are aliased and default imports', () => {
+		const importedPath = 'my-aliased-module';
+		const aliases = {
+			'my-aliased-module': `${projectRootPath}/__fixtures__/es6`
+		};
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			projectRootPath,
+			aliases,
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+
+		const expectedPath = path.resolve(
+			projectRootPath,
+			`./__fixtures__/es6/index.js`
+		);
+
+		expect(resolvedPath).toEqual(expectedPath);
+	});
+
+	it('should throw error if a file without extension can not be resolved', () => {
+		const importedPath = 'my-aliased-module/no-such-file';
+		const aliases = {
+			'my-aliased-module': `${projectRootPath}/__fixtures__/es6`
+		};
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			projectRootPath,
+			aliases,
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+
+		const expectedPath = 'Unable to import: ./no-such-file';
+
+		expect(resolvedPath).toEqual(expectedPath);
+	});
+
 	afterAll(done => {
 		fs.unlinkSync('/tmp/modules/index.js');
 		fs.rmdirSync('/tmp/modules/');
 		done();
 	});
-
-	// node modules alias
 });
