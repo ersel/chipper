@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 const pathOfImportingModule = process.cwd();
+const projectRootPath = pathOfImportingModule;
 
 describe('Resolves full path to a module', () => {
 	beforeAll(done => {
@@ -80,15 +81,83 @@ describe('Resolves full path to a module', () => {
 		expect(resolvedPath).toEqual(`${importedPath}index.js`);
 	});
 
+	it('should resolve node modules import with extension', () => {
+		const importedPath = 'moment/index.js';
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			projectRootPath,
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+
+		const expectedPath = path.resolve(
+			projectRootPath,
+			'node_modules',
+			importedPath
+		);
+
+		expect(resolvedPath).toEqual(expectedPath);
+	});
+
+	it('should resolve node modules import without extension', () => {
+		const importedPath = 'caporal/lib/utils';
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			projectRootPath,
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+
+		const expectedPath = path.resolve(
+			projectRootPath,
+			'node_modules',
+			`${importedPath}.js`
+		);
+
+		expect(resolvedPath).toEqual(expectedPath);
+	});
+
+	it('should resolve node modules import from directory', () => {
+		const importedPath = 'babel-generator/lib/';
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			projectRootPath,
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+
+		const expectedPath = path.resolve(
+			projectRootPath,
+			'node_modules',
+			`${importedPath}index.js`
+		);
+
+		expect(resolvedPath).toEqual(expectedPath);
+	});
+
+	it('should resolve node modules import from directory', () => {
+		const importedPath = 'ramda';
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			projectRootPath,
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+
+		const expectedPath = path.resolve(
+			projectRootPath,
+			'node_modules',
+			`${importedPath}/es/index.js`
+		);
+
+		expect(resolvedPath).toEqual(expectedPath);
+	});
+
 	afterAll(done => {
 		fs.unlinkSync('/tmp/modules/index.js');
 		fs.rmdirSync('/tmp/modules/');
 		done();
 	});
 
-	// node modules with extension
-	// node modules without extension
-	// node modules directory
 	// node modules alias
-	//
 });

@@ -3,14 +3,15 @@ const fs = require('fs');
 
 const resolvePathWithoutExtension = ({
 	extensions,
-	pathOfImportingModule,
+	basePath,
 	importedPath,
 	isDirectory,
-	isRelative
+	isRelativePath,
+	isNodeModulesDependency
 }) => {
 	const potentialPaths = extensions.map(ext =>
 		path.join(
-			isRelative ? pathOfImportingModule : '',
+			isRelativePath || isNodeModulesDependency ? basePath : '',
 			`${importedPath}${isDirectory ? 'index' : ''}.${ext}`
 		)
 	);
@@ -26,6 +27,7 @@ const resolvePathWithoutExtension = ({
 const resolveFilePath = ({
 	importedPath,
 	pathOfImportingModule,
+	projectRootPath,
 	extensions
 }) => {
 	let isRelativePath = false;
@@ -55,10 +57,10 @@ const resolveFilePath = ({
 	} else if (isRelativePath && !endsWithExtension) {
 		return resolvePathWithoutExtension({
 			extensions,
-			pathOfImportingModule,
+			basePath: pathOfImportingModule,
 			importedPath,
 			isDirectory,
-			isRelative: true
+			isRelativePath
 		});
 	}
 
@@ -67,12 +69,40 @@ const resolveFilePath = ({
 	} else if (isAbsolutePath && !endsWithExtension) {
 		return resolvePathWithoutExtension({
 			extensions,
-			pathOfImportingModule,
+			basePath: pathOfImportingModule,
 			importedPath,
 			isDirectory,
-			isRelative: false
+			isRelativePath
 		});
 	}
+
+	// only option left is 3rd party deps from node_modules
+	const isDefaultImport = !importedPath.includes('/');
+	if (endsWithExtension) {
+		return path.resolve(projectRootPath, 'node_modules', importedPath);
+	} else if (!endsWithExtension && !isDefaultImport) {
+		return resolvePathWithoutExtension({
+			extensions,
+			basePath: `${projectRootPath}/node_modules`,
+			importedPath,
+			isDirectory,
+			isRelativePath,
+			isNodeModulesDependency: true
+		});
+	}
+
+	// direct import from node modules
+	// import xyz from 'my-module'
+	const pathToNodeModule = path.resolve(
+		projectRootPath,
+		'node_modules',
+		importedPath
+	);
+	const packageJSON = JSON.parse(
+		fs.readFileSync(path.resolve(pathToNodeModule, 'package.json'), 'utf8')
+	);
+
+	return path.resolve(pathToNodeModule, packageJSON.module);
 };
 
 module.exports = resolveFilePath;
