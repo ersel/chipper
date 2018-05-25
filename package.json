@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest .",
-    "lint": "eslint . --fix -c .eslintrc --ignore-path .gitignore",
+    "lint": "eslint . --fix -c .eslintrc --ignore-path .eslintignore",
     "precommit": "yarn lint",
     "prepush": "yarn test"
   },

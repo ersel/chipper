@@ -4,7 +4,7 @@ const R = require('ramda');
 const getModules = (
 	targetDirectory,
 	includedPatterns = ['**/*.js'],
-	excludedPatterns = ['node_modules/*']
+	excludedPatterns = ['node_modules/**']
 ) => {
 	const globOptions = {
 		cwd: targetDirectory,

@@ -28,8 +28,8 @@ describe('Filesystem Utilities', () => {
 
 	it('should ignore multiple patterns whilst finding modules', () => {
 		const foundModules = getModules(testDirectory, undefined, [
-			'node_modules/*',
-			'directory/subdirectory/*'
+			'node_modules/**',
+			'directory/subdirectory/**'
 		]);
 		expect(foundModules).toEqual(
 			expect.arrayContaining(['index.js', 'directory/child.js'])
