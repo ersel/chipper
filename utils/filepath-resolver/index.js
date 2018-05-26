@@ -38,7 +38,7 @@ const resolveFilePath = ({
 	let isAbsolutePath = false;
 	let isDirectory = false;
 	const endsWithExtension = extensions.some(extension =>
-		importedPath.endsWith(extension)
+		importedPath.endsWith(`.${extension}`)
 	);
 	if (!endsWithExtension) {
 		isDirectory = importedPath.endsWith('/');
