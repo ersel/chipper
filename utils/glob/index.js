@@ -8,7 +8,8 @@ const getModules = (
 ) => {
 	const globOptions = {
 		cwd: targetDirectory,
-		ignore: excludedPatterns
+		ignore: excludedPatterns,
+		absolute: true
 	};
 	const modulesFound = R.flatten(
 		includedPatterns.map(pattern => glob.sync(pattern, globOptions))

@@ -12,26 +12,32 @@ describe('ES6 Import Resolvers', () => {
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
-				imported: 'myExport',
-				local: 'myExport',
+				imports: [{ imported: 'myExport', local: 'myExport' }],
 				source: '/modules/my-module.js'
 			}
 		]);
 	});
 
 	it('should resolve multiple named exports', () => {
-		const testModule = `import { myExport, myOtherExport } from '/modules/my-module.js';`;
-		const imports = resolver(testModule);
+		const testModules = `
+		import { myExport, myOtherExport } from '/modules/my-module.js';
+		import { exp1, exp2 } from '/modules/my-another-module.js';
+		`;
+		const imports = resolver(testModules);
 		expect(imports).toEqual([
 			{
-				imported: 'myExport',
-				local: 'myExport',
+				imports: [
+					{ imported: 'myExport', local: 'myExport' },
+					{ imported: 'myOtherExport', local: 'myOtherExport' }
+				],
 				source: '/modules/my-module.js'
 			},
 			{
-				imported: 'myOtherExport',
-				local: 'myOtherExport',
-				source: '/modules/my-module.js'
+				imports: [
+					{ imported: 'exp1', local: 'exp1' },
+					{ imported: 'exp2', local: 'exp2' }
+				],
+				source: '/modules/my-another-module.js'
 			}
 		]);
 	});
@@ -41,13 +47,10 @@ describe('ES6 Import Resolvers', () => {
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
-				imported: 'myExport',
-				local: 'ex1',
-				source: '/modules/my-module.js'
-			},
-			{
-				imported: 'myOtherExport',
-				local: 'ex2',
+				imports: [
+					{ imported: 'myExport', local: 'ex1' },
+					{ imported: 'myOtherExport', local: 'ex2' }
+				],
 				source: '/modules/my-module.js'
 			}
 		]);
@@ -58,8 +61,7 @@ describe('ES6 Import Resolvers', () => {
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
-				imported: '*',
-				local: 'myModule',
+				imports: [{ imported: '*', local: 'myModule' }],
 				source: '/modules/my-module.js'
 			}
 		]);
@@ -70,8 +72,7 @@ describe('ES6 Import Resolvers', () => {
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
-				imported: 'default',
-				local: 'myDefault',
+				imports: [{ imported: 'default', local: 'myDefault' }],
 				source: '/modules/my-module.js'
 			}
 		]);
@@ -82,13 +83,10 @@ describe('ES6 Import Resolvers', () => {
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
-				imported: 'default',
-				local: 'myDefault',
-				source: '/modules/my-module.js'
-			},
-			{
-				imported: '*',
-				local: 'myModule',
+				imports: [
+					{ imported: 'default', local: 'myDefault' },
+					{ imported: '*', local: 'myModule' }
+				],
 				source: '/modules/my-module.js'
 			}
 		]);
@@ -99,18 +97,11 @@ describe('ES6 Import Resolvers', () => {
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
-				imported: 'default',
-				local: 'myDefault',
-				source: '/modules/my-module.js'
-			},
-			{
-				imported: 'foo',
-				local: 'foo',
-				source: '/modules/my-module.js'
-			},
-			{
-				imported: 'bar',
-				local: 'bar',
+				imports: [
+					{ imported: 'default', local: 'myDefault' },
+					{ imported: 'foo', local: 'foo' },
+					{ imported: 'bar', local: 'bar' }
+				],
 				source: '/modules/my-module.js'
 			}
 		]);
@@ -121,18 +112,11 @@ describe('ES6 Import Resolvers', () => {
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
-				imported: 'default',
-				local: 'myDefault',
-				source: '/modules/my-module.js'
-			},
-			{
-				imported: 'foo',
-				local: 'myFoo',
-				source: '/modules/my-module.js'
-			},
-			{
-				imported: 'bar',
-				local: 'myBar',
+				imports: [
+					{ imported: 'default', local: 'myDefault' },
+					{ imported: 'foo', local: 'myFoo' },
+					{ imported: 'bar', local: 'myBar' }
+				],
 				source: '/modules/my-module.js'
 			}
 		]);

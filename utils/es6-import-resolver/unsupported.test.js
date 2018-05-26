@@ -18,6 +18,8 @@ describe('Unsupported Import', () => {
 	it('should return a string indicating unsupported import type', () => {
 		const testModule = `import myDefault, {foo as myFoo, bar as myBar} from '/modules/my-module.js'`;
 		const imports = resolver(testModule);
-		expect(imports).toEqual(['Unsupported Export']);
+		expect(imports).toEqual([
+			{ imports: ['Unsupported Export'], source: 'something' }
+		]);
 	});
 });
