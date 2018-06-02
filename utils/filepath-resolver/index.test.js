@@ -65,6 +65,28 @@ describe('Resolves full path to a module', () => {
 		expect(resolvedPath).toEqual(fullPath);
 	});
 
+	it('should handle when directory does not exist', () => {
+		const importedPath = './__fixtures__/es7/';
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+		expect(resolvedPath).toEqual('Unable to import: ./__fixtures__/es7/');
+	});
+
+	it('should handle when directory exists but there is no index module', () => {
+		const importedPath = './__fixtures__/es6/directory';
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+		expect(resolvedPath).toEqual(
+			'Unable to import: ./__fixtures__/es6/directory'
+		);
+	});
+
 	it('should resolve absolute path with extension', () => {
 		const importedPath = '/tmp/modules/index.js';
 		const resolvedPath = resolve({

@@ -26,18 +26,14 @@ const resolvePathWithoutExtension = ({
 	);
 	let foundImportedModule = resolvePotentialPaths(potentialPaths);
 	if (foundImportedModule) return foundImportedModule;
-	try {
-		if (fs.statSync(path.join(basePath, importedPath)).isDirectory()) {
-			potentialPaths = extensions.map(ext =>
-				path.join(basePath, `${importedPath}/index.${ext}`)
-			);
-			foundImportedModule = resolvePotentialPaths(potentialPaths);
-			if (foundImportedModule) return foundImportedModule;
-			return `Unable to import: ${importedPath}`;
-		}
-	} catch (e) {
-		return `Unable to import: ${importedPath}`;
+	if (!isDirectory) {
+		potentialPaths = extensions.map(ext =>
+			path.join(basePath, `${importedPath}/index.${ext}`)
+		);
+		foundImportedModule = resolvePotentialPaths(potentialPaths);
+		if (foundImportedModule) return foundImportedModule;
 	}
+	return `Unable to import: ${importedPath}`;
 };
 
 const resolveDirectNodeModuleImport = ramda.memoizeWith(
@@ -170,10 +166,13 @@ const resolveFilePath = ({
 		importedPath
 	);
 	const packageJSON = resolveDirectNodeModuleImport(pathToNodeModule);
-	return path.resolve(
-		pathToNodeModule,
-		packageJSON.module || packageJSON.main || packageJSON.files[0]
-	);
+	const entryModule =
+		packageJSON.module ||
+		packageJSON.main ||
+		ramda.path(['files', 0], packageJSON) ||
+		'Unable-To-Import';
+
+	return path.resolve(pathToNodeModule, entryModule);
 };
 
 module.exports = resolveFilePath;
