@@ -1,5 +1,11 @@
 const path = require('path');
 const fs = require('fs');
+const ramda = require('ramda');
+
+const resolvePotentialPaths = ramda.memoizeWith(
+	paths => paths.join(),
+	paths => paths.find(testPath => fs.existsSync(testPath))
+);
 
 const resolvePathWithoutExtension = ({
 	extensions,
@@ -18,14 +24,36 @@ const resolvePathWithoutExtension = ({
 			`${importedPath}${isDirectory ? 'index' : ''}.${ext}`
 		)
 	);
-	let filePath = '';
-	const foundImportedModule = potentialPaths.some(testPath => {
-		filePath = testPath;
-		return fs.existsSync(testPath);
-	});
-	if (foundImportedModule) return filePath;
+	const foundImportedModule = resolvePotentialPaths(potentialPaths);
+	if (foundImportedModule) return foundImportedModule;
 	return `Unable to import: ${importedPath}`;
 };
+
+const resolveDirectNodeModuleImport = ramda.memoizeWith(
+	ramda.identity,
+	pathToNodeModule =>
+		JSON.parse(
+			fs.readFileSync(
+				path.resolve(pathToNodeModule, 'package.json'),
+				'utf8'
+			)
+		)
+);
+
+const resolveNodeModuleImport = ramda.memoizeWith(
+	({ importedPath }) => importedPath,
+	args => resolvePathWithoutExtension(args)
+);
+
+const resolveAliasedImport = ramda.memoizeWith(
+	({ basePath, importedPath }) => `${basePath}${importedPath}`,
+	args => resolvePathWithoutExtension(args)
+);
+
+const resolveAbsoluteImport = ramda.memoizeWith(
+	({ importedPath }) => importedPath,
+	args => resolvePathWithoutExtension(args)
+);
 
 const resolveFilePath = ({
 	importedPath,
@@ -52,7 +80,7 @@ const resolveFilePath = ({
 		isRelativePath = true;
 	}
 
-	if (importedPath.startsWith('/')) {
+	if (path.isAbsolute(importedPath)) {
 		isAbsolutePath = true;
 	}
 
@@ -71,7 +99,7 @@ const resolveFilePath = ({
 	if (isAbsolutePath && endsWithExtension) {
 		return importedPath;
 	} else if (isAbsolutePath && !endsWithExtension) {
-		return resolvePathWithoutExtension({
+		return resolveAbsoluteImport({
 			extensions,
 			basePath: pathOfImportingModule,
 			importedPath,
@@ -102,7 +130,7 @@ const resolveFilePath = ({
 		if (endsWithExtension) {
 			return path.resolve(aliasPath, importedPathWithAliasResolved);
 		}
-		return resolvePathWithoutExtension({
+		return resolveAliasedImport({
 			extensions,
 			basePath: aliasPath,
 			importedPath: importedPathWithAliasResolved,
@@ -117,7 +145,7 @@ const resolveFilePath = ({
 	if (endsWithExtension) {
 		return path.resolve(projectRootPath, 'node_modules', importedPath);
 	} else if (!endsWithExtension && !isDefaultImport) {
-		return resolvePathWithoutExtension({
+		return resolveNodeModuleImport({
 			extensions,
 			basePath: `${projectRootPath}/node_modules`,
 			importedPath,
@@ -134,10 +162,7 @@ const resolveFilePath = ({
 		'node_modules',
 		importedPath
 	);
-	const packageJSON = JSON.parse(
-		fs.readFileSync(path.resolve(pathToNodeModule, 'package.json'), 'utf8')
-	);
-
+	const packageJSON = resolveDirectNodeModuleImport(pathToNodeModule);
 	return path.resolve(pathToNodeModule, packageJSON.module);
 };
 
