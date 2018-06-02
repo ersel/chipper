@@ -18,15 +18,26 @@ const resolvePathWithoutExtension = ({
 }) => {
 	const useBasePath =
 		isRelativePath || isNodeModulesDependency || isAliasedImport;
-	const potentialPaths = extensions.map(ext =>
+	let potentialPaths = extensions.map(ext =>
 		path.join(
 			useBasePath ? basePath : '',
 			`${importedPath}${isDirectory ? 'index' : ''}.${ext}`
 		)
 	);
-	const foundImportedModule = resolvePotentialPaths(potentialPaths);
+	let foundImportedModule = resolvePotentialPaths(potentialPaths);
 	if (foundImportedModule) return foundImportedModule;
-	return `Unable to import: ${importedPath}`;
+	try {
+		if (fs.statSync(path.join(basePath, importedPath)).isDirectory()) {
+			potentialPaths = extensions.map(ext =>
+				path.join(basePath, `${importedPath}/index.${ext}`)
+			);
+			foundImportedModule = resolvePotentialPaths(potentialPaths);
+			if (foundImportedModule) return foundImportedModule;
+			return `Unable to import: ${importedPath}`;
+		}
+	} catch (e) {
+		return `Unable to import: ${importedPath}`;
+	}
 };
 
 const resolveDirectNodeModuleImport = ramda.memoizeWith(
@@ -72,11 +83,7 @@ const resolveFilePath = ({
 		isDirectory = importedPath.endsWith('/');
 	}
 
-	if (
-		importedPath.startsWith('./') ||
-		importedPath.startsWith('../') ||
-		importedPath.startsWith('~/')
-	) {
+	if (importedPath.startsWith('.') || importedPath.startsWith('~/')) {
 		isRelativePath = true;
 	}
 
@@ -163,7 +170,10 @@ const resolveFilePath = ({
 		importedPath
 	);
 	const packageJSON = resolveDirectNodeModuleImport(pathToNodeModule);
-	return path.resolve(pathToNodeModule, packageJSON.module);
+	return path.resolve(
+		pathToNodeModule,
+		packageJSON.module || packageJSON.main || packageJSON.files[0]
+	);
 };
 
 module.exports = resolveFilePath;

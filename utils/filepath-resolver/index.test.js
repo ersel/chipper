@@ -51,6 +51,20 @@ describe('Resolves full path to a module', () => {
 		expect(resolvedPath).toEqual(fullPath);
 	});
 
+	it('should resolve imports from a directory without /', () => {
+		const importedPath = './__fixtures__/es6';
+		const fullPath = path.resolve(
+			pathOfImportingModule,
+			`${importedPath}/index.js`
+		);
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+		expect(resolvedPath).toEqual(fullPath);
+	});
+
 	it('should resolve absolute path with extension', () => {
 		const importedPath = '/tmp/modules/index.js';
 		const resolvedPath = resolve({
