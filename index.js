@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 const prog = require('caporal');
-const ramda = require('ramda');
-const scanner = require('./lib/scanner/cache/');
 const packageJSON = require('./package.json');
+const surfaceAction = require('./cli/surface');
 
 prog.version(packageJSON.version);
 
-const GLOBAL_CHIPPER_OPTIONS = [
+const GLOBAL_OPTIONS = [
 	['--targetDir', 'Target scan directory', prog.STRING, '.'],
 	['--projectRoot', 'Project root path', prog.STRING, process.cwd()],
 	['--ext', 'File extensions to be matched', prog.LIST, 'js'],
@@ -39,27 +38,7 @@ const surfaceCmd = prog
 		'Examine the surface area of a module or a directory of modules'
 	)
 	.alias('s')
-	.action((args, opts) => {
-		const aliases = ramda.flatten([opts.alias]).reduce((acc, alias) => {
-			const [k, v] = alias.split(':');
-			acc[k] = v;
-			return acc;
-		}, {});
-		scanner(
-			{
-				targetDirectory: opts.targetDir,
-				projectRootPath: opts.projectRoot,
-				includedPatterns: opts.incl,
-				excludedPatterns: opts.excl,
-				extensions: opts.ext,
-				aliases
-			},
-			opts.rescan
-		).then(results => {
-			console.log(results);
-		});
-		// todo: check args if it's a node_module, a single module, or a directory of modules
-	});
+	.action(surfaceAction);
 
 const depsCmd = prog
 	.command(
@@ -67,11 +46,11 @@ const depsCmd = prog
 		'List all imports by a module or a directory of modules'
 	)
 	.alias('d')
-	.action((args, options) => {
-		console.log(args, options);
-	});
+	.action();
 
-GLOBAL_CHIPPER_OPTIONS.map(o => surfaceCmd.option(...o));
-GLOBAL_CHIPPER_OPTIONS.map(o => depsCmd.option(...o));
+GLOBAL_OPTIONS.forEach(o => {
+	surfaceCmd.option(...o);
+	depsCmd.option(...o);
+});
 
 prog.parse(process.argv);
