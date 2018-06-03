@@ -1,4 +1,4 @@
-const aliasParser = require('../utils/index');
+const utils = require('../utils/index');
 const scanner = require('../../lib/scanner/cache/');
 
 const surfaceAction = (args, opts) => {
@@ -9,13 +9,12 @@ const surfaceAction = (args, opts) => {
 			includedPatterns: opts.incl,
 			excludedPatterns: opts.excl,
 			extensions: opts.ext,
-			aliases: aliasParser(opts.alias, opts.projectRoot)
+			aliases: utils.parseAliases(opts.alias, opts.projectRoot)
 		},
 		opts.rescan
 	).then(results => {
 		console.log(results);
 	});
-	// todo: check args if it's a node_module, a single module, or a directory of modules
 	// todo: do path check to filter matching scan results
 	// print results nicely
 	// offer exports as csv or json
