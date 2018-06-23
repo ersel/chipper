@@ -11,12 +11,22 @@ const config = {
 	plugins: {
 		jsx: true,
 		objectSpread: true
-	}
+	},
+	ecmaVersion: 8
 };
 
-const resolver = moduleContents => {
+const resolver = (moduleContents, fileName) => {
 	const dependencies = [];
-	const ast = acorn.parse(moduleContents, config);
+	let ast = {};
+	try {
+		ast = acorn.parse(moduleContents, config);
+	} catch (e) {
+		console.error(
+			`Could not parse ${fileName} \nYou might need to use a custom acorn configuration.`
+		);
+		console.error(e);
+		ast.body = [];
+	}
 	const nodes = ast.body;
 	for (let j = 0; j < nodes.length; j += 1) {
 		const node = nodes[j];

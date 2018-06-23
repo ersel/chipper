@@ -31,7 +31,7 @@ const parseTargetPath = (targetPath, projectRootPath, aliases) => {
 		const targetPathResolved = path.resolve(projectRootPath, targetPath);
 		fs.statSync(targetPathResolved);
 		return targetPathResolved;
-	} catch (e) {} // eslint-disable-line no-empty
+	} catch (e) {}
 
 	try {
 		const targetPathNodeModule = path.resolve(
@@ -41,7 +41,7 @@ const parseTargetPath = (targetPath, projectRootPath, aliases) => {
 		);
 		fs.statSync(targetPathNodeModule);
 		return targetPathNodeModule;
-	} catch (e) {} // eslint-disable-line no-empty
+	} catch (e) {}
 
 	const aliasNames = Object.keys(aliases);
 	const aliasedImport = aliasNames.find(alias =>

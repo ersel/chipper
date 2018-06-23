@@ -38,6 +38,11 @@ const surfaceCmd = prog
 		'Examine the surface area of a module or a directory of modules'
 	)
 	.alias('s')
+	.argument(
+		'target',
+		'Target module or directory of modules to analyse usage.',
+		prog.STRING
+	)
 	.action(surfaceAction);
 
 const depsCmd = prog
