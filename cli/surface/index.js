@@ -73,7 +73,40 @@ const surfaceAction = (args, opts) => {
 			console.log(`Scanning for imports depending on ${searchTarget}`);
 			results = scanResults(scanData, searchTarget);
 		}
-		console.log(JSON.stringify(results, null, 2));
+
+		if (results.length) {
+			const table = [
+				['Source Module', 'Imported Module', 'Imported Symbols']
+			];
+			results.forEach(result => {
+				result.importedModules.forEach(imported => {
+					const symbols = imported.imports
+						.map(i => {
+							if (i.imported !== i.local) {
+								return `${i.imported} as ${i.local}`;
+							}
+							return i.imported;
+						})
+						.join(', ');
+					const row = [
+						result.sourceFile.replace(opts.projectRoot, ''),
+						imported.absolute.replace(opts.projectRoot, ''),
+						symbols
+					];
+					table.push(row);
+				});
+			});
+			const htmlReport = utils.createHTMLTable(table);
+			const fileTimeStamp = new Date().toISOString().substring(0, 16);
+			fs.writeFileSync(
+				`./chipper-report-${fileTimeStamp}.html`,
+				htmlReport,
+				'utf8'
+			);
+			utils.openFile(`./chipper-report-${fileTimeStamp}.html`);
+		} else {
+			console.log('No results found.');
+		}
 	});
 };
 
