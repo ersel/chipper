@@ -23,3 +23,5 @@ describe('Unsupported Import', () => {
 		]);
 	});
 });
+
+describe('Unsupported syntax', () => {});

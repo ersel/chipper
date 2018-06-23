@@ -32,3 +32,15 @@ describe('alias resolution', () => {
 		});
 	});
 });
+
+describe('HTML Table', () => {
+	it('should generate HTML table from array of arrays', () => {
+		const myTable = [
+			['A', 'B', 'C'],
+			['data1', 'data2', 'data3'],
+			['data4', 'data5', 'data6']
+		];
+
+		expect(utils.createHTMLTable(myTable)).toMatchSnapshot();
+	});
+});

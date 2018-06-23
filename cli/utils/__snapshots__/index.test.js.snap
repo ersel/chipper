@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTML Table should generate HTML table from array of arrays 1`] = `
+"
+	<html>
+	<head>
+	<title>Chipper Scan Results</title>
+	<style>
+	
+	table.blueTable {
+		border: 1px solid #1C6EA4;
+		background-color: #EEEEEE;
+		width: 100%;
+		text-align: left;
+		border-collapse: collapse;
+	  }
+	  table.blueTable td, table.blueTable th {
+		border: 1px solid #AAAAAA;
+		padding: 3px 2px;
+	  }
+	  table.blueTable tbody td {
+		font-size: 18px;
+	  }
+	  table.blueTable tr:nth-child(even) {
+		background: #D0E4F5;
+	  }
+	  table.blueTable thead {
+		background: #1C6EA4;
+		background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		border-bottom: 2px solid #444444;
+	  }
+	  table.blueTable thead th {
+		font-size: 15px;
+		font-weight: bold;
+		color: #FFFFFF;
+		border-left: 2px solid #D0E4F5;
+	  }
+	  table.blueTable thead th:first-child {
+		border-left: none;
+	  }
+	
+	</style>
+	</head>
+	<table class=\\"blueTable\\">
+	<thead>
+	<tr>
+	<th>A</th><th>B</th><th>C</th></tr></thead><tr><td>data1</td><td>data2</td><td>data3</td></tr><tr><td>data4</td><td>data5</td><td>data6</td></tr></table></html>"
+`;
