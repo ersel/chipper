@@ -35,6 +35,7 @@ const surfaceAction = (args, opts) => {
 		},
 		opts.rescan
 	).then(scanData => {
+		console.log(scanData, 'data');
 		const { target } = args;
 		let results = [];
 
