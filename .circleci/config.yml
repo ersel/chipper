@@ -19,7 +19,7 @@ jobs:
       - run: yarn lint
       - run: yarn test --coverage
   deploy:
-      docker:
+    docker:
       - image: circleci/node:8.11.3
     steps:
       - checkout
