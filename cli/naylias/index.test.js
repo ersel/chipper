@@ -130,7 +130,7 @@ describe('naylias command', () => {
 					numberOfImportsCanBeAliased: 2
 				},
 				{
-					sourceFile: '/Users/erselaker/chipper/src/queueService.js',
+					sourceFile: `${PROJECT_ROOT}/src/queueService.js`,
 					numberOfImportsCanBeAliased: 1
 				}
 			]);
