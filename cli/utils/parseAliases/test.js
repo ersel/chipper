@@ -1,10 +1,10 @@
-const utils = require('.');
+const parseAliases = require('./');
 
 const testRootPath = process.cwd();
 describe('alias resolution', () => {
 	it('should parse CLI alias args into key-value pairs', () => {
 		const testAliases = ['my-alias:/somePath/to/somewhere'];
-		const parsedAliases = utils.parseAliases(testAliases);
+		const parsedAliases = parseAliases(testAliases);
 		expect(parsedAliases).toEqual({
 			'my-alias': '/somePath/to/somewhere'
 		});
@@ -12,12 +12,12 @@ describe('alias resolution', () => {
 
 	it('should throw if encountered invalid alias declaration', () => {
 		const testAliases = ['my-alias-/somePath/to/somewhere'];
-		expect(() => utils.parseAliases(testAliases, testRootPath)).toThrow();
+		expect(() => parseAliases(testAliases, testRootPath)).toThrow();
 	});
 
 	it('should parse multiple aliases', () => {
 		const testAliases = ['x:/path/to/x', 'y:/path/to/y'];
-		const parsedAliases = utils.parseAliases(testAliases, testRootPath);
+		const parsedAliases = parseAliases(testAliases, testRootPath);
 		expect(parsedAliases).toEqual({
 			x: '/path/to/x',
 			y: '/path/to/y'
@@ -26,21 +26,9 @@ describe('alias resolution', () => {
 
 	it('should parse relative paths', () => {
 		const testAliases = ['x:relative/module'];
-		const parsedAliases = utils.parseAliases(testAliases, testRootPath);
+		const parsedAliases = parseAliases(testAliases, testRootPath);
 		expect(parsedAliases).toEqual({
 			x: `${testRootPath}/relative/module`
 		});
-	});
-});
-
-describe('HTML Table', () => {
-	it('should generate HTML table from array of arrays', () => {
-		const myTable = [
-			['A', 'B', 'C'],
-			['data1', 'data2', 'data3'],
-			['data4', 'data5', 'data6']
-		];
-
-		expect(utils.createHTMLTable(myTable)).toMatchSnapshot();
 	});
 });

@@ -1,7 +1,9 @@
 const path = require('path');
 const fs = require('fs');
-const utils = require('../utils/index');
+const createHTMLTable = require('../utils/createTable/');
+const parseAliases = require('../utils/parseAliases/');
 const scanner = require('../../lib/scanner/cache/');
+const openFile = require('../utils/openFile/');
 
 const scanResults = (scanData, searchPath) =>
 	scanData
@@ -21,10 +23,10 @@ const scanResults = (scanData, searchPath) =>
 
 const surfaceAction = (args, opts) => {
 	const aliases = opts.alias
-		? utils.parseAliases(opts.alias, opts.projectRoot)
+		? parseAliases(opts.alias, opts.projectRoot)
 		: {};
 
-	scanner(
+	return scanner(
 		{
 			targetDirectory: opts.targetDir,
 			projectRootPath: opts.projectRoot,
@@ -35,7 +37,6 @@ const surfaceAction = (args, opts) => {
 		},
 		opts.rescan
 	).then(scanData => {
-		console.log(scanData, 'data');
 		const { target } = args;
 		let results = [];
 
@@ -97,14 +98,14 @@ const surfaceAction = (args, opts) => {
 					table.push(row);
 				});
 			});
-			const htmlReport = utils.createHTMLTable(table);
+			const htmlReport = createHTMLTable(table);
 			const fileTimeStamp = new Date().toISOString().substring(0, 16);
 			fs.writeFileSync(
 				`./chipper-report-${fileTimeStamp}.html`,
 				htmlReport,
 				'utf8'
 			);
-			utils.openFile(`./chipper-report-${fileTimeStamp}.html`);
+			openFile(`./chipper-report-${fileTimeStamp}.html`);
 		} else {
 			console.log('No results found.');
 		}

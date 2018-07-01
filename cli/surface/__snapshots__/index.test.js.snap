@@ -1,0 +1,197 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`surface command should find aliased imports 1`] = `
+"
+	<html>
+	<head>
+	<title>Chipper Scan Results</title>
+	<style>
+	
+	table.blueTable {
+		border: 1px solid #1C6EA4;
+		background-color: #EEEEEE;
+		width: 100%;
+		text-align: left;
+		border-collapse: collapse;
+	  }
+	  table.blueTable td, table.blueTable th {
+		border: 1px solid #AAAAAA;
+		padding: 3px 2px;
+	  }
+	  table.blueTable tbody td {
+		font-size: 18px;
+	  }
+	  table.blueTable tr:nth-child(even) {
+		background: #D0E4F5;
+	  }
+	  table.blueTable thead {
+		background: #1C6EA4;
+		background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		border-bottom: 2px solid #444444;
+	  }
+	  table.blueTable thead th {
+		font-size: 15px;
+		font-weight: bold;
+		color: #FFFFFF;
+		border-left: 2px solid #D0E4F5;
+	  }
+	  table.blueTable thead th:first-child {
+		border-left: none;
+	  }
+	
+	</style>
+	</head>
+	<table class=\\"blueTable\\">
+	<thead>
+	<tr>
+	<th>Source Module</th><th>Imported Module</th><th>Imported Symbols</th></tr></thead><tr><td>/src/loginService.js</td><td>/src/utils/cookiesService.js</td><td>setCookie</td></tr></table></html>"
+`;
+
+exports[`surface command should find local imports (absolute path) 1`] = `
+"
+	<html>
+	<head>
+	<title>Chipper Scan Results</title>
+	<style>
+	
+	table.blueTable {
+		border: 1px solid #1C6EA4;
+		background-color: #EEEEEE;
+		width: 100%;
+		text-align: left;
+		border-collapse: collapse;
+	  }
+	  table.blueTable td, table.blueTable th {
+		border: 1px solid #AAAAAA;
+		padding: 3px 2px;
+	  }
+	  table.blueTable tbody td {
+		font-size: 18px;
+	  }
+	  table.blueTable tr:nth-child(even) {
+		background: #D0E4F5;
+	  }
+	  table.blueTable thead {
+		background: #1C6EA4;
+		background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		border-bottom: 2px solid #444444;
+	  }
+	  table.blueTable thead th {
+		font-size: 15px;
+		font-weight: bold;
+		color: #FFFFFF;
+		border-left: 2px solid #D0E4F5;
+	  }
+	  table.blueTable thead th:first-child {
+		border-left: none;
+	  }
+	
+	</style>
+	</head>
+	<table class=\\"blueTable\\">
+	<thead>
+	<tr>
+	<th>Source Module</th><th>Imported Module</th><th>Imported Symbols</th></tr></thead><tr><td>/src/loginService.js</td><td>/src/documentsService.js</td><td>getDocuments as getLoggedInUsersDocuments</td></tr></table></html>"
+`;
+
+exports[`surface command should find local imports (relative path) 1`] = `
+"
+	<html>
+	<head>
+	<title>Chipper Scan Results</title>
+	<style>
+	
+	table.blueTable {
+		border: 1px solid #1C6EA4;
+		background-color: #EEEEEE;
+		width: 100%;
+		text-align: left;
+		border-collapse: collapse;
+	  }
+	  table.blueTable td, table.blueTable th {
+		border: 1px solid #AAAAAA;
+		padding: 3px 2px;
+	  }
+	  table.blueTable tbody td {
+		font-size: 18px;
+	  }
+	  table.blueTable tr:nth-child(even) {
+		background: #D0E4F5;
+	  }
+	  table.blueTable thead {
+		background: #1C6EA4;
+		background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		border-bottom: 2px solid #444444;
+	  }
+	  table.blueTable thead th {
+		font-size: 15px;
+		font-weight: bold;
+		color: #FFFFFF;
+		border-left: 2px solid #D0E4F5;
+	  }
+	  table.blueTable thead th:first-child {
+		border-left: none;
+	  }
+	
+	</style>
+	</head>
+	<table class=\\"blueTable\\">
+	<thead>
+	<tr>
+	<th>Source Module</th><th>Imported Module</th><th>Imported Symbols</th></tr></thead><tr><td>/src/loginService.js</td><td>/src/documentsService.js</td><td>getDocuments as getLoggedInUsersDocuments</td></tr></table></html>"
+`;
+
+exports[`surface command should find node_module imports 1`] = `
+"
+	<html>
+	<head>
+	<title>Chipper Scan Results</title>
+	<style>
+	
+	table.blueTable {
+		border: 1px solid #1C6EA4;
+		background-color: #EEEEEE;
+		width: 100%;
+		text-align: left;
+		border-collapse: collapse;
+	  }
+	  table.blueTable td, table.blueTable th {
+		border: 1px solid #AAAAAA;
+		padding: 3px 2px;
+	  }
+	  table.blueTable tbody td {
+		font-size: 18px;
+	  }
+	  table.blueTable tr:nth-child(even) {
+		background: #D0E4F5;
+	  }
+	  table.blueTable thead {
+		background: #1C6EA4;
+		background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+		border-bottom: 2px solid #444444;
+	  }
+	  table.blueTable thead th {
+		font-size: 15px;
+		font-weight: bold;
+		color: #FFFFFF;
+		border-left: 2px solid #D0E4F5;
+	  }
+	  table.blueTable thead th:first-child {
+		border-left: none;
+	  }
+	
+	</style>
+	</head>
+	<table class=\\"blueTable\\">
+	<thead>
+	<tr>
+	<th>Source Module</th><th>Imported Module</th><th>Imported Symbols</th></tr></thead><tr><td>/src/documentsService.js</td><td>/node_modules/lodash/lodash.js</td><td>uniq</td></tr></table></html>"
+`;

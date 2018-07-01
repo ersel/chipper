@@ -1,4 +1,4 @@
-const utils = require('./');
+const openFile = require('./');
 const childProcess = require('child_process');
 
 jest.mock('child_process', () => ({ exec: jest.fn() }));
@@ -14,28 +14,28 @@ describe('Open Report File', () => {
 		Object.defineProperty(global.process, 'platform', {
 			value: 'darwin'
 		});
-		utils.openFile('./someReport.html');
+		openFile('./someReport.html');
 		expect(childProcess.exec).lastCalledWith('open ./someReport.html');
 
 		// WIN32
 		Object.defineProperty(global.process, 'platform', {
 			value: 'win32'
 		});
-		utils.openFile('./someReport.html');
+		openFile('./someReport.html');
 		expect(childProcess.exec).lastCalledWith('start ./someReport.html');
 
 		// WIN64
 		Object.defineProperty(global.process, 'platform', {
 			value: 'win64'
 		});
-		utils.openFile('./someReport.html');
+		openFile('./someReport.html');
 		expect(childProcess.exec).lastCalledWith('start ./someReport.html');
 
 		// UBUNTU
 		Object.defineProperty(global.process, 'platform', {
 			value: 'ubuntu'
 		});
-		utils.openFile('./someReport.html');
+		openFile('./someReport.html');
 		expect(childProcess.exec).lastCalledWith('xdg-open ./someReport.html');
 
 		// restore to original platform
