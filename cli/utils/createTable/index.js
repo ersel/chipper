@@ -1,5 +1,4 @@
-const createHTMLTable = results => {
-	const tableStyle = `
+const tableStyle = `
 	table.blueTable {
 		border: 1px solid #1C6EA4;
 		background-color: #EEEEEE;
@@ -34,6 +33,28 @@ const createHTMLTable = results => {
 		border-left: none;
 	  }
 	`;
+
+const createHTMLTable = (results, projectRoot) => {
+	const table = [['Source Module', 'Imported Module', 'Imported Symbols']];
+	results.forEach(({ importedModules, sourceFile }) => {
+		importedModules.forEach(({ imports, absolute }) => {
+			const symbols = imports
+				.map(({ imported, local }) => {
+					if (imported !== local) {
+						return `${imported} as ${local}`;
+					}
+					return imported;
+				})
+				.join(', ');
+			const row = [
+				sourceFile.replace(projectRoot, ''),
+				absolute.replace(projectRoot, ''),
+				symbols
+			];
+			table.push(row);
+		});
+	});
+
 	let result = `
 	<html>
 	<head>
@@ -46,11 +67,11 @@ const createHTMLTable = results => {
 	<thead>
 	<tr>
 	`;
-	results.shift().forEach(column => {
+	table.shift().forEach(column => {
 		result += `<th>${column}</th>`;
 	});
 	result += `</tr></thead>`;
-	results.forEach(row => {
+	table.forEach(row => {
 		result += '<tr>';
 		row.forEach(column => {
 			result += `<td>${column}</td>`;

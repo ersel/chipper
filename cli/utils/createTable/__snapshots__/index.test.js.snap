@@ -46,5 +46,5 @@ exports[`HTML Table should generate HTML table from array of arrays 1`] = `
 	<table class=\\"blueTable\\">
 	<thead>
 	<tr>
-	<th>A</th><th>B</th><th>C</th></tr></thead><tr><td>data1</td><td>data2</td><td>data3</td></tr><tr><td>data4</td><td>data5</td><td>data6</td></tr></table></html>"
+	<th>Source Module</th><th>Imported Module</th><th>Imported Symbols</th></tr></thead><tr><td>/Users/erselaker/chipper/src/loginService.js</td><td>/Users/erselaker/chipper/src/utils/cookiesService.js</td><td>setCookie</td></tr></table></html>"
 `;

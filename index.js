@@ -2,6 +2,7 @@
 const prog = require('caporal');
 const packageJSON = require('./package.json');
 const surfaceAction = require('./cli/surface');
+const dependenciesAction = require('./cli/dependencies');
 
 prog.version(packageJSON.version);
 
@@ -51,7 +52,12 @@ const depsCmd = prog
 		'List all imports by a module or a directory of modules'
 	)
 	.alias('d')
-	.action();
+	.argument(
+		'target',
+		'Target module or directory of modules to see all imports for',
+		prog.STRING
+	)
+	.action(dependenciesAction);
 
 GLOBAL_OPTIONS.forEach(o => {
 	surfaceCmd.option(...o);

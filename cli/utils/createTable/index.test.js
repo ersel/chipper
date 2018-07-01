@@ -2,12 +2,20 @@ const createHTMLTable = require('./');
 
 describe('HTML Table', () => {
 	it('should generate HTML table from array of arrays', () => {
-		const myTable = [
-			['A', 'B', 'C'],
-			['data1', 'data2', 'data3'],
-			['data4', 'data5', 'data6']
+		const sampleResult = [
+			{
+				sourceFile: '/Users/erselaker/chipper/src/loginService.js',
+				importedModules: [
+					{
+						source: './utils/cookiesService',
+						absolute:
+							'/Users/erselaker/chipper/src/utils/cookiesService.js',
+						imports: [{ imported: 'setCookie', local: 'setCookie' }]
+					}
+				]
+			}
 		];
 
-		expect(createHTMLTable(myTable)).toMatchSnapshot();
+		expect(createHTMLTable(sampleResult)).toMatchSnapshot();
 	});
 });

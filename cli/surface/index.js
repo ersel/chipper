@@ -22,6 +22,7 @@ const scanResults = (scanData, searchPath) =>
 		.filter(r => r);
 
 const surfaceAction = (args, opts) => {
+	const { target } = args;
 	const aliases = opts.alias
 		? parseAliases(opts.alias, opts.projectRoot)
 		: {};
@@ -37,7 +38,6 @@ const surfaceAction = (args, opts) => {
 		},
 		opts.rescan
 	).then(scanData => {
-		const { target } = args;
 		let results = [];
 
 		// CHECK IF SCAN TARGET IS A NODE_MODULE
@@ -77,35 +77,11 @@ const surfaceAction = (args, opts) => {
 		}
 
 		if (results.length) {
-			const table = [
-				['Source Module', 'Imported Module', 'Imported Symbols']
-			];
-			results.forEach(result => {
-				result.importedModules.forEach(imported => {
-					const symbols = imported.imports
-						.map(i => {
-							if (i.imported !== i.local) {
-								return `${i.imported} as ${i.local}`;
-							}
-							return i.imported;
-						})
-						.join(', ');
-					const row = [
-						result.sourceFile.replace(opts.projectRoot, ''),
-						imported.absolute.replace(opts.projectRoot, ''),
-						symbols
-					];
-					table.push(row);
-				});
-			});
-			const htmlReport = createHTMLTable(table);
+			const htmlReport = createHTMLTable(results, opts.projectRoot);
 			const fileTimeStamp = new Date().toISOString().substring(0, 16);
-			fs.writeFileSync(
-				`./chipper-report-${fileTimeStamp}.html`,
-				htmlReport,
-				'utf8'
-			);
-			openFile(`./chipper-report-${fileTimeStamp}.html`);
+			const reportFileName = `./chipper-report-${fileTimeStamp}.html`;
+			fs.writeFileSync(reportFileName, htmlReport, 'utf8');
+			openFile(reportFileName);
 		} else {
 			console.log('No results found.');
 		}
