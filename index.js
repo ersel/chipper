@@ -3,6 +3,7 @@ const prog = require('caporal');
 const packageJSON = require('./package.json');
 const surfaceAction = require('./cli/surface');
 const dependenciesAction = require('./cli/dependencies');
+const nayliasAction = require('./cli/naylias');
 
 prog.version(packageJSON.version);
 
@@ -38,7 +39,7 @@ const surfaceCmd = prog
 		'surface',
 		'Examine the surface area of a module or a directory of modules'
 	)
-	.alias('s')
+	.alias('surf')
 	.argument(
 		'target',
 		'Target module or directory of modules to analyse usage.',
@@ -51,7 +52,7 @@ const depsCmd = prog
 		'dependencies',
 		'List all imports by a module or a directory of modules'
 	)
-	.alias('d')
+	.alias('dep')
 	.argument(
 		'target',
 		'Target module or directory of modules to see all imports for',
@@ -59,9 +60,16 @@ const depsCmd = prog
 	)
 	.action(dependenciesAction);
 
+const nayliasCmd = prog
+	.command('naylias', 'List all modules where an alias could be utilized')
+	.alias('nay')
+	.argument('alias', 'Alias to check for utilization', prog.STRING)
+	.action(nayliasAction);
+
 GLOBAL_OPTIONS.forEach(o => {
 	surfaceCmd.option(...o);
 	depsCmd.option(...o);
+	nayliasCmd.option(...o);
 });
 
 prog.parse(process.argv);
