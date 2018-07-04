@@ -10,6 +10,9 @@
     "prepush": "yarn test",
     "semantic-release": "semantic-release"
   },
+  "bin": {
+    "chipper": "./index.js"
+  },
   "author": "Ersel Aker",
   "license": "MIT",
   "devDependencies": {
