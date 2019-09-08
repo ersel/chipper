@@ -14,7 +14,7 @@ describe('ES6 Import Resolvers', () => {
 			{
 				imports: [{ imported: 'myExport', local: 'myExport' }],
 				source: '/modules/my-module.js',
-				"type": "es6",
+				type: 'es6'
 			}
 		]);
 	});
@@ -32,7 +32,7 @@ describe('ES6 Import Resolvers', () => {
 					{ imported: 'myOtherExport', local: 'myOtherExport' }
 				],
 				source: '/modules/my-module.js',
-				"type": "es6",
+				type: 'es6'
 			},
 			{
 				imports: [
@@ -40,7 +40,7 @@ describe('ES6 Import Resolvers', () => {
 					{ imported: 'exp2', local: 'exp2' }
 				],
 				source: '/modules/my-another-module.js',
-				"type": "es6",
+				type: 'es6'
 			}
 		]);
 	});
@@ -55,7 +55,7 @@ describe('ES6 Import Resolvers', () => {
 					{ imported: 'myOtherExport', local: 'ex2' }
 				],
 				source: '/modules/my-module.js',
-				"type": "es6",
+				type: 'es6'
 			}
 		]);
 	});
@@ -67,7 +67,7 @@ describe('ES6 Import Resolvers', () => {
 			{
 				imports: [{ imported: '*', local: 'myModule' }],
 				source: '/modules/my-module.js',
-				"type": "es6",
+				type: 'es6'
 			}
 		]);
 	});
@@ -79,7 +79,7 @@ describe('ES6 Import Resolvers', () => {
 			{
 				imports: [{ imported: 'default', local: 'myDefault' }],
 				source: '/modules/my-module.js',
-				"type": "es6",
+				type: 'es6'
 			}
 		]);
 	});
@@ -94,7 +94,7 @@ describe('ES6 Import Resolvers', () => {
 					{ imported: '*', local: 'myModule' }
 				],
 				source: '/modules/my-module.js',
-				"type": "es6",
+				type: 'es6'
 			}
 		]);
 	});
@@ -110,7 +110,7 @@ describe('ES6 Import Resolvers', () => {
 					{ imported: 'bar', local: 'bar' }
 				],
 				source: '/modules/my-module.js',
-				"type": "es6",
+				type: 'es6'
 			}
 		]);
 	});
@@ -126,7 +126,7 @@ describe('ES6 Import Resolvers', () => {
 					{ imported: 'bar', local: 'myBar' }
 				],
 				source: '/modules/my-module.js',
-				"type": "es6",
+				type: 'es6'
 			}
 		]);
 	});
