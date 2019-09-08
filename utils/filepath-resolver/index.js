@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const ramda = require('ramda');
+const builtInModules = require('./builtin-modules');
 
 const resolvePotentialPaths = ramda.memoizeWith(
 	paths => paths.join(),
@@ -143,12 +144,19 @@ const resolveFilePath = ({
 		});
 	}
 
-	// only option left is 3rd party deps from node_modules
+	// check for 3rd party deps from node_modules
 	const isDefaultImport = !importedPath.includes('/');
 	if (endsWithExtension) {
-		return path.resolve(projectRootPath, 'node_modules', importedPath);
+		const potentialPath = path.resolve(
+			projectRootPath,
+			'node_modules',
+			importedPath
+		);
+		if (fs.existsSync(potentialPath)) {
+			return potentialPath;
+		}
 	} else if (!endsWithExtension && !isDefaultImport) {
-		return resolveNodeModuleImport({
+		const potentialPath = resolveNodeModuleImport({
 			extensions,
 			basePath: `${projectRootPath}/node_modules`,
 			importedPath,
@@ -156,6 +164,9 @@ const resolveFilePath = ({
 			isRelativePath,
 			isNodeModulesDependency: true
 		});
+		if (fs.existsSync(potentialPath)) {
+			return potentialPath;
+		}
 	}
 
 	// direct import from node modules
@@ -165,14 +176,23 @@ const resolveFilePath = ({
 		'node_modules',
 		importedPath
 	);
-	const packageJSON = resolveDirectNodeModuleImport(pathToNodeModule);
-	const entryModule =
-		packageJSON.module ||
-		packageJSON.main ||
-		ramda.path(['files', 0], packageJSON) ||
-		'Unable-To-Import';
 
-	return path.resolve(pathToNodeModule, entryModule);
+	if (fs.existsSync(pathToNodeModule)) {
+		const packageJSON = resolveDirectNodeModuleImport(pathToNodeModule);
+		const entryModule =
+			packageJSON.module ||
+			packageJSON.main ||
+			ramda.path(['files', 0], packageJSON) ||
+			'Unable-To-Import';
+
+		return path.resolve(pathToNodeModule, entryModule);
+	}
+	const builtInModule = importedPath.split('/')[0];
+	if (builtInModules.some(core => builtInModule.startsWith(core))) {
+		return importedPath;
+	}
+
+	return 'Unable-To-Import';
 };
 
 module.exports = resolveFilePath;

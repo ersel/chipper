@@ -118,7 +118,7 @@ describe('Resolves full path to a module', () => {
 	});
 
 	it('should resolve node modules import with extension', () => {
-		const importedPath = 'moment/index.js';
+		const importedPath = 'babel-jest/build/index.js';
 		const resolvedPath = resolve({
 			importedPath,
 			pathOfImportingModule,
@@ -266,6 +266,54 @@ describe('Resolves full path to a module', () => {
 		});
 
 		const expectedPath = 'Unable to import: ./no-such-file';
+
+		expect(resolvedPath).toEqual(expectedPath);
+	});
+
+	it('should recognize built-in nodejs core modules (1)', () => {
+		const importedPath = 'path';
+
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			projectRootPath,
+			aliases: {},
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+
+		const expectedPath = 'path';
+
+		expect(resolvedPath).toEqual(expectedPath);
+	});
+
+	it('should recognize built-in nodejs core modules (2)', () => {
+		const importedPath = 'path/something-else';
+
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			projectRootPath,
+			aliases: {},
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+
+		const expectedPath = 'path/something-else';
+
+		expect(resolvedPath).toEqual(expectedPath);
+	});
+
+	it('should recognize built-in nodejs core modules (3)', () => {
+		const importedPath = 'path/something-else.js';
+
+		const resolvedPath = resolve({
+			importedPath,
+			pathOfImportingModule,
+			projectRootPath,
+			aliases: {},
+			extensions: ['ts', 'jsx', 'mjs', 'js']
+		});
+
+		const expectedPath = 'path/something-else.js';
 
 		expect(resolvedPath).toEqual(expectedPath);
 	});
