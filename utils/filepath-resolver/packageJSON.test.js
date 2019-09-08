@@ -6,6 +6,7 @@ const pathOfImportingModule = process.cwd();
 const projectRootPath = pathOfImportingModule;
 
 jest.mock('fs');
+fs.existsSync = () => true;
 
 describe('read package.json', () => {
 	it('should resolve node modules import from directory', () => {
