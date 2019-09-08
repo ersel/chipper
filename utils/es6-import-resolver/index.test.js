@@ -13,7 +13,8 @@ describe('ES6 Import Resolvers', () => {
 		expect(imports).toEqual([
 			{
 				imports: [{ imported: 'myExport', local: 'myExport' }],
-				source: '/modules/my-module.js'
+				source: '/modules/my-module.js',
+				"type": "es6",
 			}
 		]);
 	});
@@ -30,14 +31,16 @@ describe('ES6 Import Resolvers', () => {
 					{ imported: 'myExport', local: 'myExport' },
 					{ imported: 'myOtherExport', local: 'myOtherExport' }
 				],
-				source: '/modules/my-module.js'
+				source: '/modules/my-module.js',
+				"type": "es6",
 			},
 			{
 				imports: [
 					{ imported: 'exp1', local: 'exp1' },
 					{ imported: 'exp2', local: 'exp2' }
 				],
-				source: '/modules/my-another-module.js'
+				source: '/modules/my-another-module.js',
+				"type": "es6",
 			}
 		]);
 	});
@@ -51,7 +54,8 @@ describe('ES6 Import Resolvers', () => {
 					{ imported: 'myExport', local: 'ex1' },
 					{ imported: 'myOtherExport', local: 'ex2' }
 				],
-				source: '/modules/my-module.js'
+				source: '/modules/my-module.js',
+				"type": "es6",
 			}
 		]);
 	});
@@ -62,7 +66,8 @@ describe('ES6 Import Resolvers', () => {
 		expect(imports).toEqual([
 			{
 				imports: [{ imported: '*', local: 'myModule' }],
-				source: '/modules/my-module.js'
+				source: '/modules/my-module.js',
+				"type": "es6",
 			}
 		]);
 	});
@@ -73,7 +78,8 @@ describe('ES6 Import Resolvers', () => {
 		expect(imports).toEqual([
 			{
 				imports: [{ imported: 'default', local: 'myDefault' }],
-				source: '/modules/my-module.js'
+				source: '/modules/my-module.js',
+				"type": "es6",
 			}
 		]);
 	});
@@ -87,7 +93,8 @@ describe('ES6 Import Resolvers', () => {
 					{ imported: 'default', local: 'myDefault' },
 					{ imported: '*', local: 'myModule' }
 				],
-				source: '/modules/my-module.js'
+				source: '/modules/my-module.js',
+				"type": "es6",
 			}
 		]);
 	});
@@ -102,7 +109,8 @@ describe('ES6 Import Resolvers', () => {
 					{ imported: 'foo', local: 'foo' },
 					{ imported: 'bar', local: 'bar' }
 				],
-				source: '/modules/my-module.js'
+				source: '/modules/my-module.js',
+				"type": "es6",
 			}
 		]);
 	});
@@ -117,7 +125,8 @@ describe('ES6 Import Resolvers', () => {
 					{ imported: 'foo', local: 'myFoo' },
 					{ imported: 'bar', local: 'myBar' }
 				],
-				source: '/modules/my-module.js'
+				source: '/modules/my-module.js',
+				"type": "es6",
 			}
 		]);
 	});

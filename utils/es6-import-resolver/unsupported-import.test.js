@@ -19,7 +19,11 @@ describe('Unsupported Import', () => {
 		const testModule = `import myDefault, {foo as myFoo, bar as myBar} from '/modules/my-module.js'`;
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
-			{ imports: ['Unsupported Export'], source: 'something' }
+			{
+				imports: ['Unsupported Export'],
+				source: 'something',
+				type: 'es6'
+			}
 		]);
 	});
 });
