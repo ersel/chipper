@@ -12,8 +12,7 @@ const checkifVariableDeclaratorWithFunctionCall = node =>
 	node.declarations &&
 	node.declarations[0] &&
 	node.declarations[0].type === 'VariableDeclarator' &&
-	node.declarations[0].init &&
-	node.declarations[0].init.type === 'CallExpression';
+	node.declarations[0].init;
 
 const checkIfDefaultRequire = node =>
 	node &&
@@ -28,6 +27,18 @@ const checkIfDefaultRequire = node =>
 	node.declarations[0].init.arguments &&
 	node.declarations[0].init.arguments[0] &&
 	node.declarations[0].init.arguments[0].type === 'Literal';
+
+const checkIfSoleRequire = node =>
+	node &&
+	node.type === 'ExpressionStatement' &&
+	node.expression.type === 'CallExpression' &&
+	node.expression.callee &&
+	node.expression.callee.type === 'Identifier' &&
+	node.expression.callee.name === 'require' &&
+	node.expression.arguments[0] &&
+	node.expression.arguments[0].type === 'Literal';
+
+const checkIfExpression = node => node && node.type === 'ExpressionStatement';
 
 const config = {
 	ranges: true,
@@ -74,7 +85,30 @@ const resolver = (moduleContents, fileName) => {
 			}
 		}
 
-		if (source) {
+		if (!source && checkIfSoleRequire(node)) {
+			source = {
+				source: node.expression.arguments[0].value,
+				path: ''
+			};
+			dependencies.push({
+				...source,
+				imports: [],
+				type: 'commonjs'
+			});
+		} else if (!source && checkIfExpression(node)) {
+			memberImport = checkStaticRequireWithMemberExpressionsRecursively(
+				node.expression
+			);
+			if (memberImport !== 'n/a') {
+				// todo: prepend . to path if it doesnt start with(
+				source = memberImport;
+			}
+			dependencies.push({
+				...source,
+				imports: [],
+				type: 'commonjs'
+			});
+		} else if (source) {
 			const imports = parseIdentifiers(node.declarations[0].id);
 			dependencies.push({ ...source, imports, type: 'commonjs' });
 		}

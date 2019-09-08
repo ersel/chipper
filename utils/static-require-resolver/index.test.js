@@ -13,7 +13,35 @@ describe('Static Require Resolvers (CJS)', () => {
 		expect(imports).toEqual([
 			{
 				imports: [],
-				source: 'some-module.js'
+				path: '',
+				source: 'some-module.js',
+				type: 'commonjs'
+			}
+		]);
+	});
+
+	it('should resolve a membered cjs require without declaration', () => {
+		const testModule = `require('some-module.js')('')({}).xyz.lol().test()({}).joking`;
+		const imports = resolver(testModule);
+		expect(imports).toEqual([
+			{
+				imports: [],
+				path: '()().xyz.lol().test()().joking',
+				source: 'some-module.js',
+				type: 'commonjs'
+			}
+		]);
+	});
+
+	it('should resolve a membered cjs require without declaration (2)', () => {
+		const testModule = `require('some-module.js').ABC`;
+		const imports = resolver(testModule);
+		expect(imports).toEqual([
+			{
+				imports: [],
+				path: 'ABC',
+				source: 'some-module.js',
+				type: 'commonjs'
 			}
 		]);
 	});
@@ -23,29 +51,31 @@ describe('Static Require Resolvers (CJS)', () => {
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
-				imports: [{ imported: 'default', local: 'xyz' }],
-				source: 'some-module.js'
+				imports: [{ imported: '*', local: 'xyz' }],
+				path: '',
+				source: 'some-module.js',
+				type: 'commonjs'
 			}
 		]);
 	});
 
-	it.only('should resolve a named cjs require', () => {
-		// const testModule = `r()`;
-		const testModule = `const { test, t: s, ...rest}  = require('some-module.js')`;
-		// const testModule = `const xyz = require('some-module.js')('')({}).xyz.lol().test()({}).joking`;
+	it('should resolve a membered cjs require', () => {
+		const testModule = `const xyz = require('some-module.js')('')({}).xyz.lol().test()({}).joking`;
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
-				imports: [{ imported: 'default', local: 'xyz' }],
-				source: 'some-module.js'
+				imports: [{ imported: '*', local: 'xyz' }],
+				path: '()().xyz.lol().test()().joking',
+				source: 'some-module.js',
+				type: 'commonjs'
 			}
 		]);
 	});
 
-	it('should resolve multiple named exports', () => {
+	it('should resolve multiple destructuring requires', () => {
 		const testModules = `
-		import { myExport, myOtherExport } from '/modules/my-module.js';
-		import { exp1, exp2 } from '/modules/my-another-module.js';
+		const { myExport, myOtherExport } = require('/modules/my-module.js');;
+		const { exp1, exp2 } = require('/modules/my-another-module.js');
 		`;
 		const imports = resolver(testModules);
 		expect(imports).toEqual([
@@ -54,20 +84,24 @@ describe('Static Require Resolvers (CJS)', () => {
 					{ imported: 'myExport', local: 'myExport' },
 					{ imported: 'myOtherExport', local: 'myOtherExport' }
 				],
-				source: '/modules/my-module.js'
+				path: '',
+				source: '/modules/my-module.js',
+				type: 'commonjs'
 			},
 			{
 				imports: [
 					{ imported: 'exp1', local: 'exp1' },
 					{ imported: 'exp2', local: 'exp2' }
 				],
-				source: '/modules/my-another-module.js'
+				path: '',
+				source: '/modules/my-another-module.js',
+				type: 'commonjs'
 			}
 		]);
 	});
 
-	it('should resolve named exports with aliases', () => {
-		const testModule = `import { myExport as ex1, myOtherExport as ex2 } from '/modules/my-module.js';`;
+	it('should resolve requires with destructuring and renaming', () => {
+		const testModule = `const { myExport: ex1, myOtherExport: ex2 } = require('/modules/my-module.js');`;
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
@@ -75,73 +109,56 @@ describe('Static Require Resolvers (CJS)', () => {
 					{ imported: 'myExport', local: 'ex1' },
 					{ imported: 'myOtherExport', local: 'ex2' }
 				],
-				source: '/modules/my-module.js'
+				path: '',
+				source: '/modules/my-module.js',
+				type: 'commonjs'
 			}
 		]);
 	});
 
-	it('should resolve entire module exports', () => {
-		const testModule = `import * as myModule from '/modules/my-module.js';`;
-		const imports = resolver(testModule);
-		expect(imports).toEqual([
-			{
-				imports: [{ imported: '*', local: 'myModule' }],
-				source: '/modules/my-module.js'
-			}
-		]);
-	});
-
-	it('should resolve default exports', () => {
-		const testModule = `import myDefault from '/modules/my-module.js';`;
-		const imports = resolver(testModule);
-		expect(imports).toEqual([
-			{
-				imports: [{ imported: 'default', local: 'myDefault' }],
-				source: '/modules/my-module.js'
-			}
-		]);
-	});
-
-	it('should resolve default exports and namespace imports', () => {
-		const testModule = `import myDefault, * as myModule from '/modules/my-module.js';`;
+	it('should resolve rest parameter require', () => {
+		const testModule = `const { test, test1: xyz, ...rest } = require('some-module.js');`;
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
 				imports: [
-					{ imported: 'default', local: 'myDefault' },
-					{ imported: '*', local: 'myModule' }
+					{ imported: 'test', local: 'test' },
+					{ imported: 'test1', local: 'xyz' },
+					{ imported: '...', local: 'rest' }
 				],
-				source: '/modules/my-module.js'
+				path: '',
+				source: 'some-module.js',
+				type: 'commonjs'
 			}
 		]);
 	});
 
-	it('should resolve default exports and named imports', () => {
-		const testModule = `import myDefault, {foo, bar} from '/modules/my-module.js'`;
+	it('should resolve membered require with destructuring', () => {
+		const testModule = `const { test, test1: xyz, ...rest } = require('some-module.js')('')({}).xyz.lol().test()({}).joking;`;
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
 				imports: [
-					{ imported: 'default', local: 'myDefault' },
-					{ imported: 'foo', local: 'foo' },
-					{ imported: 'bar', local: 'bar' }
+					{ imported: 'test', local: 'test' },
+					{ imported: 'test1', local: 'xyz' },
+					{ imported: '...', local: 'rest' }
 				],
-				source: '/modules/my-module.js'
+				path: '()().xyz.lol().test()().joking',
+				source: 'some-module.js',
+				type: 'commonjs'
 			}
 		]);
 	});
 
-	it('should resolve default exports and named imports with aliases', () => {
-		const testModule = `import myDefault, {foo as myFoo, bar as myBar} from '/modules/my-module.js'`;
+	it('should resolve membered require', () => {
+		const testModule = `const x = require('some-module.js').ABC`;
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
-				imports: [
-					{ imported: 'default', local: 'myDefault' },
-					{ imported: 'foo', local: 'myFoo' },
-					{ imported: 'bar', local: 'myBar' }
-				],
-				source: '/modules/my-module.js'
+				imports: [{ imported: '*', local: 'x' }],
+				path: 'ABC',
+				source: 'some-module.js',
+				type: 'commonjs'
 			}
 		]);
 	});
