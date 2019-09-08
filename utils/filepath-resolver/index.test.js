@@ -154,7 +154,7 @@ describe('Resolves full path to a module', () => {
 	});
 
 	it('should resolve node modules import from directory', () => {
-		const importedPath = 'babel-generator/lib/';
+		const importedPath = 'babel-jest/build/';
 		const resolvedPath = resolve({
 			importedPath,
 			pathOfImportingModule,

@@ -53,7 +53,8 @@ const resolver = (moduleContents, fileName) => {
 			});
 			dependencies.push({
 				source,
-				imports
+				imports,
+				type: 'es6'
 			});
 		}
 	}

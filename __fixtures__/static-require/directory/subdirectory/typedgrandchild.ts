@@ -1,0 +1,1 @@
+const importFromAliasedLibrary = require('aliased-library');
