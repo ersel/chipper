@@ -5,7 +5,7 @@
 > cheerful and lively
 
 ## What is Chipper?
-Chipper is a static analysis tool which examines ES6 imports across your codebase.
+Chipper is a static analysis tool which examines ES6 imports and CommonJS requires across your codebase.
 
 ## Why use Chipper?
 You can use Chipper to find out:
