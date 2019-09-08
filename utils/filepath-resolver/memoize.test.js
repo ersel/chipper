@@ -127,7 +127,7 @@ describe('calls to fs module are memoized', () => {
 			extensions: ['js']
 		});
 		expect(resolvedPath).toEqual(expectedPath);
-		expect(fs.existsSync.mock.calls.length).toBe(1);
+		expect(fs.existsSync.mock.calls.length).toBe(2);
 
 		resolvedPath = resolve({
 			importedPath,
@@ -136,7 +136,7 @@ describe('calls to fs module are memoized', () => {
 			extensions: ['js']
 		});
 		expect(resolvedPath).toEqual(expectedPath);
-		expect(fs.existsSync.mock.calls.length).toBe(1);
+		expect(fs.existsSync.mock.calls.length).toBe(3);
 	});
 
 	it('should resolve node modules import from directory', () => {
@@ -156,7 +156,7 @@ describe('calls to fs module are memoized', () => {
 		});
 
 		expect(resolvedPath).toEqual(expectedPath);
-		expect(fs.existsSync.mock.calls.length).toBe(1);
+		expect(fs.existsSync.mock.calls.length).toBe(2);
 
 		resolvedPath = resolve({
 			importedPath,
@@ -165,7 +165,7 @@ describe('calls to fs module are memoized', () => {
 			extensions: ['js']
 		});
 		expect(resolvedPath).toEqual(expectedPath);
-		expect(fs.existsSync.mock.calls.length).toBe(1);
+		expect(fs.existsSync.mock.calls.length).toBe(3);
 	});
 
 	it('should resolve node modules import from directory', () => {
