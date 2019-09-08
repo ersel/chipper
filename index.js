@@ -8,25 +8,30 @@ const nayliasAction = require('./cli/naylias');
 prog.version(packageJSON.version);
 
 const GLOBAL_OPTIONS = [
-	['--targetDir', 'Target scan directory', prog.STRING, '.'],
-	['--projectRoot', 'Project root path', prog.STRING, process.cwd()],
-	['--ext', 'File extensions to be matched', prog.LIST, 'js'],
-	['--incl', 'Glob patterns to include in scan', prog.LIST, '**/*.js'],
+	['--targetDir <path>', 'Target scan directory', prog.STRING, '.'],
+	['--projectRoot <path>', 'Project root path', prog.STRING, process.cwd()],
+	['--ext <extensions>', 'File extensions to be matched', prog.LIST, 'js'],
 	[
-		'--excl',
+		'--incl <glob-patterns>',
+		'Glob patterns to include in scan',
+		prog.LIST,
+		'**/*.js'
+	],
+	[
+		'--excl <glob-patterns>',
 		'Glob patterns to exclude in scan',
 		prog.LIST,
 		'node_modules/**'
 	],
 	[
-		'--alias',
+		'--alias <aliases>',
 		'Alias used within your project. E.g: my-alias-name:path/to/my/alias',
 		prog.REPEATABLE,
 		'',
 		false
 	],
 	[
-		'--rescan',
+		'--rescan <boolean>',
 		'Invalidates chipper cache and forces a rescan',
 		prog.BOOL,
 		false,

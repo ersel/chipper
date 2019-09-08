@@ -162,4 +162,21 @@ describe('Static Require Resolvers (CJS)', () => {
 			}
 		]);
 	});
+
+	it('should resolve membered require', () => {
+		const testModule = `
+		  
+		  const createDelivery = async ({
+			clientId,
+			supplierId,
+			deliveryRef,
+			estimatedDeliveryDate,
+			deliveryLines
+		  }) => {};
+		  
+		  module.exports = createDelivery;
+		  `;
+		const imports = resolver(testModule);
+		expect(imports).toEqual([]);
+	});
 });
