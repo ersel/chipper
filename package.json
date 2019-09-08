@@ -4,7 +4,7 @@
   "description": "A static analysis tool for JavaScript which examines surface area of ES6 modules throughout your codebase",
   "main": "index.js",
   "scripts": {
-    "test": "jest .",
+    "test": "jest ",
     "lint": "eslint . --fix -c .eslintrc --ignore-path .eslintignore",
     "precommit": "yarn lint",
     "prepush": "yarn test",
@@ -15,6 +15,9 @@
   },
   "author": "Ersel Aker",
   "license": "MIT",
+  "jest": {
+    "testEnvironment": "node"
+  },
   "devDependencies": {
     "eslint": "^4.9.0",
     "eslint-config-airbnb-base": "^12.1.0",
