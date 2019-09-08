@@ -102,12 +102,12 @@ const resolver = (moduleContents, fileName) => {
 			if (memberImport !== 'n/a') {
 				// todo: prepend . to path if it doesnt start with(
 				source = memberImport;
+				dependencies.push({
+					...source,
+					imports: [],
+					type: 'commonjs'
+				});
 			}
-			dependencies.push({
-				...source,
-				imports: [],
-				type: 'commonjs'
-			});
 		} else if (source) {
 			const imports = parseIdentifiers(node.declarations[0].id);
 			dependencies.push({ ...source, imports, type: 'commonjs' });
