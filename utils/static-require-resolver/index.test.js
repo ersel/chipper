@@ -30,8 +30,8 @@ describe('Static Require Resolvers (CJS)', () => {
 	});
 
 	it.only('should resolve a named cjs require', () => {
-		// const testModule = `const xyz = require('some-module.js')('test')().h.t.zzz()().lll.wtf()`;
-		const testModule = `const xyz = require('some-module.js')('')({}).xyz.lol().test()({}).joking`;
+		 const testModule = `const xyz = require('some-module.js')('test')().h.t.zzz()().lll.wtf()()()().noProbs`;
+		// const testModule = `const xyz = require('some-module.js')('')({}).xyz.lol().test()({}).joking`;
 		const imports = resolver(testModule);
 		expect(imports).toEqual([
 			{
