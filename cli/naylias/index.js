@@ -1,4 +1,4 @@
-const scanner = require('../../lib/scanner/cache/');
+const scanner = require('../../lib/scanner/cache/scanCache');
 const parseAliases = require('../utils/parseAliases/');
 
 const nayliasAction = (args, opts) => {

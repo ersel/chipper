@@ -1,12 +1,12 @@
 const fs = require('fs');
 
 const dependenciesAction = require('./');
-const scanner = require('../../lib/scanner/cache/');
+const scanner = require('../../lib/scanner/cache/scanCache');
 const openFile = require('../utils/openFile/');
 
 jest.mock('../utils/openFile/');
 jest.mock('fs');
-jest.mock('../../lib/scanner/cache/', () =>
+jest.mock('../../lib/scanner/cache/scanCache', () =>
 	jest.fn(() => {
 		const PROJECT_ROOT = process.cwd();
 		const MOCK_SCAN_DATA = [

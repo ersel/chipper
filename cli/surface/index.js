@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const createHTMLTable = require('../utils/createTable/');
 const parseAliases = require('../utils/parseAliases/');
-const scanner = require('../../lib/scanner/cache/');
+const scanner = require('../../lib/scanner/cache/scanCache');
 const openFile = require('../utils/openFile/');
 
 const scanResults = (scanData, searchPath) =>

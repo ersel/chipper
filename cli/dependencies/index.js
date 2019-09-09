@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const scanner = require('../../lib/scanner/cache/');
+const scanner = require('../../lib/scanner/cache/scanCache');
 const parseAliases = require('../utils/parseAliases/');
 const openFile = require('../utils/openFile/');
 const createHTMLTable = require('../utils/createTable/');
