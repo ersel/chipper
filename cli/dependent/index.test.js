@@ -57,7 +57,7 @@ describe('dependent command', () => {
 	beforeEach(() => {
 		testOptions = {
 			targetDir: '.',
-			projectRoot: process.cwd(),
+			projectRoot: testRootPath,
 			ext: ['js'],
 			incl: ['**/*.js'],
 			excl: ['node_modules/**'],
@@ -74,7 +74,7 @@ describe('dependent command', () => {
 						excludedPatterns: ['node_modules/**'],
 						extensions: ['js'],
 						includedPatterns: ['**/*.js'],
-						projectRootPath: process.cwd(),
+						projectRootPath: testRootPath,
 						targetDirectory: '.'
 					},
 					testOptions.rescan
@@ -94,7 +94,7 @@ describe('dependent command', () => {
 						excludedPatterns: ['node_modules/**'],
 						extensions: ['js'],
 						includedPatterns: ['**/*.js'],
-						projectRootPath: process.cwd(),
+						projectRootPath: testRootPath,
 						targetDirectory: '.'
 					},
 					testOptions.rescan
@@ -189,14 +189,73 @@ describe('dependent command', () => {
 		});
 	});
 
-	// check alias resolutions for source and path
-	// check absolute path resolution for source and path
-	it.skip('should return all imports for an aliased search target', done => {
-		testOptions.alias = `my-utils:${process.cwd()}/src/utils`;
+	it('should work with aliased source and path arguments (1)', done => {
+		testOptions.alias = `~serverless:${testRootPath}/serverless`;
 		dependentAction(
-			{ target: 'my-utils/cookiesServices.js' },
+			{
+				source: '~serverless/function1/index.js',
+				target: '~serverless/function2/index.js'
+			},
 			testOptions
-		).then(() => {
+		).then(results => {
+			expect(results).toEqual({ path: [], pathExists: false });
+			done();
+		});
+	});
+
+	it('should work with aliased source and path arguments (2)', done => {
+		testOptions.alias = `~serverless:${testRootPath}/serverless`;
+		dependentAction(
+			{
+				source: '~serverless/function1/index.js',
+				target: `${testRootPath}/settings.js`
+			},
+			testOptions
+		).then(results => {
+			expect(results).toEqual({
+				path: [
+					`${testRootPath}/serverless/function1/index.js`,
+					`${testRootPath}/utils/round/index.js`,
+					`${testRootPath}/settings.js`
+				],
+				pathExists: true
+			});
+			done();
+		});
+	});
+
+	it('should work with relative source and target arguments (1)', done => {
+		dependentAction(
+			{
+				source: `serverless/function2/index.js`,
+				target: `settings.js`
+			},
+			testOptions
+		).then(result => {
+			expect(result).toEqual({
+				path: [
+					`${testRootPath}/serverless/function2/index.js`,
+					`${testRootPath}/utils/round/index.js`,
+					`${testRootPath}/settings.js`
+				],
+				pathExists: true
+			});
+			done();
+		});
+	});
+
+	it('should work with relative source and target arguments (20', done => {
+		dependentAction(
+			{
+				source: `serverless/function3/index.js`,
+				target: `settings.js`
+			},
+			testOptions
+		).then(result => {
+			expect(result).toEqual({
+				path: [],
+				pathExists: false
+			});
 			done();
 		});
 	});
