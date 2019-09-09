@@ -23,47 +23,32 @@ describe('Construct graph data structure from scan data', () => {
 			const graph = constructGraph(results).serialize();
 			expect(graph).toEqual({
 				nodes: [
-					{
-						id: `${testRootPath}/directory/child.js`
-					},
-					{
-						id: `${testRootPath}/directory/subdirectory/grandchild.js`
-					},
-					{
-						id: `${testRootPath}/directory/subdirectory/typedgrandchild.ts`
-					},
-					{
-						id: `${testRootPath}/node_modules/somethingjs/index.js`
-					},
-					{
-						id: `${testRootPath}/index.js`
-					}
+					`${testRootPath}/directory/child.js`,
+					`${testRootPath}/directory/subdirectory/grandchild.js`,
+					`${testRootPath}/directory/subdirectory/typedgrandchild.ts`,
+					`${testRootPath}/node_modules/somethingjs/index.js`,
+					`${testRootPath}/index.js`
 				],
 				links: [
 					{
 						source: `${testRootPath}/directory/child.js`,
-						target: `${testRootPath}/directory/subdirectory/grandchild.js`,
-						weight: 1
+						target: `${testRootPath}/directory/subdirectory/grandchild.js`
 					},
 					{
 						source: `${testRootPath}/directory/child.js`,
-						target: `${testRootPath}/directory/subdirectory/typedgrandchild.ts`,
-						weight: 1
+						target: `${testRootPath}/directory/subdirectory/typedgrandchild.ts`
 					},
 					{
 						source: `${testRootPath}/directory/subdirectory/grandchild.js`,
-						target: `${testRootPath}/node_modules/somethingjs/index.js`,
-						weight: 1
+						target: `${testRootPath}/node_modules/somethingjs/index.js`
 					},
 					{
 						source: `${testRootPath}/directory/subdirectory/typedgrandchild.ts`,
-						target: `${testRootPath}/index.js`,
-						weight: 1
+						target: `${testRootPath}/index.js`
 					},
 					{
 						source: `${testRootPath}/index.js`,
-						target: `${testRootPath}/directory/child.js`,
-						weight: 1
+						target: `${testRootPath}/directory/child.js`
 					}
 				]
 			});

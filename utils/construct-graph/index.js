@@ -1,15 +1,16 @@
-const Graph = require('graph-data-structure');
+const Graph = require('../../utils/Graph');
 
-const constuctGraph = scanData => {
-	const graph = Graph();
+const constructGraph = scanData => {
+	const graph = new Graph();
 	scanData.forEach(file => {
 		const node = file.sourceFile;
-		graph.addNode(node);
+		graph.addVertex(node);
 		file.importedModules.forEach(m => {
+			graph.addVertex(m.absolute);
 			graph.addEdge(node, m.absolute);
 		});
 	});
 	return graph;
 };
 
-module.exports = constuctGraph;
+module.exports = constructGraph;
