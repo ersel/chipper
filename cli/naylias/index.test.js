@@ -1,9 +1,9 @@
 const nayliasAction = require('./');
-const scanner = require('../../lib/scanner/cache/');
+const scanner = require('../../lib/scanner/cache/scanCache');
 
 jest.mock('../utils/openFile/');
 jest.mock('fs');
-jest.mock('../../lib/scanner/cache/', () =>
+jest.mock('../../lib/scanner/cache/scanCache', () =>
 	jest.fn(() => {
 		const PROJECT_ROOT = process.cwd();
 		const MOCK_SCAN_DATA = [

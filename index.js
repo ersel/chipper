@@ -3,6 +3,7 @@ const prog = require('caporal');
 const packageJSON = require('./package.json');
 const surfaceAction = require('./cli/surface');
 const dependenciesAction = require('./cli/dependencies');
+const dependentAction = require('./cli/dependent');
 const nayliasAction = require('./cli/naylias');
 
 prog.version(packageJSON.version);
@@ -65,6 +66,16 @@ const depsCmd = prog
 	)
 	.action(dependenciesAction);
 
+const dependentCmd = prog
+	.command('dependent', 'Check if a module depends on another module')
+	.argument(
+		'source',
+		'Source module to check if it is dependent on target module',
+		prog.STRING
+	)
+	.argument('target', 'target module', prog.STRING)
+	.action(dependentAction);
+
 const nayliasCmd = prog
 	.command('naylias', 'List all modules where an alias could be utilized')
 	.alias('nay')
@@ -75,6 +86,9 @@ GLOBAL_OPTIONS.forEach(o => {
 	surfaceCmd.option(...o);
 	depsCmd.option(...o);
 	nayliasCmd.option(...o);
+	dependentCmd.option(...o);
 });
 
 prog.parse(process.argv);
+
+module.exports = prog;
