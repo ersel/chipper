@@ -30,6 +30,14 @@ class Graph {
 		}
 	}
 
+	nodes() {
+		const nodes = [];
+		for (const [key] of this.AdjList) {
+			nodes.push(key);
+		}
+		return nodes;
+	}
+
 	serialize() {
 		const result = {
 			nodes: [],
@@ -74,7 +82,7 @@ class Graph {
 			path.push(node);
 			const elements = this.AdjList.get(node);
 			if (elements.includes(secondNode)) {
-				return true;
+				return { path: [...path, secondNode], pathExists: true };
 			}
 			for (const elem of elements) {
 				if (!visited[elem]) {
@@ -83,7 +91,7 @@ class Graph {
 				}
 			}
 		}
-		return false;
+		return { path: [], pathExists: false };
 	}
 }
 

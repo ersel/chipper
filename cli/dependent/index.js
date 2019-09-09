@@ -20,14 +20,14 @@ const dependentAction = (args, opts) => {
 		},
 		opts.rescan
 	).then(scanData => {
-		let searchTarget;
-		let searchSource;
+		let searchTarget = target;
+		let searchSource = source;
 
 		// CHECK IF SCAN SOURCE IS AN ALIAS
 		const aliasesArr = Object.keys(aliases);
 		const sourceAliasKey = aliasesArr.find(a => source.startsWith(a));
 		if (sourceAliasKey) {
-			searchSource = target.replace(
+			searchSource = source.replace(
 				sourceAliasKey,
 				aliases[sourceAliasKey]
 			);
@@ -82,12 +82,7 @@ const dependentAction = (args, opts) => {
 			return null;
 		}
 
-		console.log(graph.shortestPath(searchNode, targetNode));
-
-		// check if node and edge are both found
-		// if yes, run the shortest path algorithm
-
-		// return true, false or null
+		return graph.doesPathExist(searchNode, targetNode);
 	});
 };
 

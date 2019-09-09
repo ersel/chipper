@@ -39,67 +39,87 @@ describe('DirectedGraph', () => {
 		deserializedGraph.deserialize(SERIALIZED_GRAPH);
 
 		// sanity check deserialized graph
-		expect(deserializedGraph.doesPathExist('A', 'A')).toBe(false);
-		expect(deserializedGraph.doesPathExist('A', 'D')).toBe(true);
-		expect(deserializedGraph.doesPathExist('A', 'E')).toBe(true);
-		expect(deserializedGraph.doesPathExist('A', 'F')).toBe(true);
-		expect(deserializedGraph.doesPathExist('C', 'A')).toBe(false);
-		expect(deserializedGraph.doesPathExist('C', 'E')).toBe(false);
-		expect(deserializedGraph.doesPathExist('C', 'F')).toBe(true);
-		expect(deserializedGraph.doesPathExist('D', 'C')).toBe(true);
-		expect(deserializedGraph.doesPathExist('D', 'D')).toBe(false);
-		expect(deserializedGraph.doesPathExist('D', 'E')).toBe(true);
-		expect(deserializedGraph.doesPathExist('D', 'F')).toBe(true);
-		expect(deserializedGraph.doesPathExist('E', 'A')).toBe(false);
-		expect(deserializedGraph.doesPathExist('E', 'D')).toBe(false);
-		expect(deserializedGraph.doesPathExist('E', 'E')).toBe(false);
-		expect(deserializedGraph.doesPathExist('E', 'F')).toBe(true);
-		expect(deserializedGraph.doesPathExist('F', 'A')).toBe(false);
-		expect(deserializedGraph.doesPathExist('F', 'B')).toBe(false);
-		expect(deserializedGraph.doesPathExist('F', 'F')).toBe(false);
+		expect(deserializedGraph.doesPathExist('A', 'A').pathExists).toBe(
+			false
+		);
+		expect(deserializedGraph.doesPathExist('A', 'D').pathExists).toBe(true);
+		expect(deserializedGraph.doesPathExist('A', 'E').pathExists).toBe(true);
+		expect(deserializedGraph.doesPathExist('A', 'F').pathExists).toBe(true);
+		expect(deserializedGraph.doesPathExist('C', 'A').pathExists).toBe(
+			false
+		);
+		expect(deserializedGraph.doesPathExist('C', 'E').pathExists).toBe(
+			false
+		);
+		expect(deserializedGraph.doesPathExist('C', 'F').pathExists).toBe(true);
+		expect(deserializedGraph.doesPathExist('D', 'C').pathExists).toBe(true);
+		expect(deserializedGraph.doesPathExist('D', 'D').pathExists).toBe(
+			false
+		);
+		expect(deserializedGraph.doesPathExist('D', 'E').pathExists).toBe(true);
+		expect(deserializedGraph.doesPathExist('D', 'F').pathExists).toBe(true);
+		expect(deserializedGraph.doesPathExist('E', 'A').pathExists).toBe(
+			false
+		);
+		expect(deserializedGraph.doesPathExist('E', 'D').pathExists).toBe(
+			false
+		);
+		expect(deserializedGraph.doesPathExist('E', 'E').pathExists).toBe(
+			false
+		);
+		expect(deserializedGraph.doesPathExist('E', 'F').pathExists).toBe(true);
+		expect(deserializedGraph.doesPathExist('F', 'A').pathExists).toBe(
+			false
+		);
+		expect(deserializedGraph.doesPathExist('F', 'B').pathExists).toBe(
+			false
+		);
+		expect(deserializedGraph.doesPathExist('F', 'F').pathExists).toBe(
+			false
+		);
 	});
 
 	it('should find paths', () => {
-		expect(g.doesPathExist('A', 'A')).toBe(false);
-		expect(g.doesPathExist('A', 'B')).toBe(true);
-		expect(g.doesPathExist('A', 'C')).toBe(true);
-		expect(g.doesPathExist('A', 'D')).toBe(true);
-		expect(g.doesPathExist('A', 'E')).toBe(true);
-		expect(g.doesPathExist('A', 'F')).toBe(true);
+		expect(g.doesPathExist('A', 'A').pathExists).toBe(false);
+		expect(g.doesPathExist('A', 'B').pathExists).toBe(true);
+		expect(g.doesPathExist('A', 'C').pathExists).toBe(true);
+		expect(g.doesPathExist('A', 'D').pathExists).toBe(true);
+		expect(g.doesPathExist('A', 'E').pathExists).toBe(true);
+		expect(g.doesPathExist('A', 'F').pathExists).toBe(true);
 
-		expect(g.doesPathExist('B', 'A')).toBe(false);
-		expect(g.doesPathExist('B', 'B')).toBe(false);
-		expect(g.doesPathExist('B', 'C')).toBe(true);
-		expect(g.doesPathExist('B', 'D')).toBe(false);
-		expect(g.doesPathExist('B', 'E')).toBe(false);
-		expect(g.doesPathExist('B', 'F')).toBe(true);
+		expect(g.doesPathExist('B', 'A').pathExists).toBe(false);
+		expect(g.doesPathExist('B', 'B').pathExists).toBe(false);
+		expect(g.doesPathExist('B', 'C').pathExists).toBe(true);
+		expect(g.doesPathExist('B', 'D').pathExists).toBe(false);
+		expect(g.doesPathExist('B', 'E').pathExists).toBe(false);
+		expect(g.doesPathExist('B', 'F').pathExists).toBe(true);
 
-		expect(g.doesPathExist('C', 'A')).toBe(false);
-		expect(g.doesPathExist('C', 'B')).toBe(false);
-		expect(g.doesPathExist('C', 'C')).toBe(false);
-		expect(g.doesPathExist('C', 'D')).toBe(false);
-		expect(g.doesPathExist('C', 'E')).toBe(false);
-		expect(g.doesPathExist('C', 'F')).toBe(true);
+		expect(g.doesPathExist('C', 'A').pathExists).toBe(false);
+		expect(g.doesPathExist('C', 'B').pathExists).toBe(false);
+		expect(g.doesPathExist('C', 'C').pathExists).toBe(false);
+		expect(g.doesPathExist('C', 'D').pathExists).toBe(false);
+		expect(g.doesPathExist('C', 'E').pathExists).toBe(false);
+		expect(g.doesPathExist('C', 'F').pathExists).toBe(true);
 
-		expect(g.doesPathExist('D', 'A')).toBe(false);
-		expect(g.doesPathExist('D', 'B')).toBe(false);
-		expect(g.doesPathExist('D', 'C')).toBe(true);
-		expect(g.doesPathExist('D', 'D')).toBe(false);
-		expect(g.doesPathExist('D', 'E')).toBe(true);
-		expect(g.doesPathExist('D', 'F')).toBe(true);
+		expect(g.doesPathExist('D', 'A').pathExists).toBe(false);
+		expect(g.doesPathExist('D', 'B').pathExists).toBe(false);
+		expect(g.doesPathExist('D', 'C').pathExists).toBe(true);
+		expect(g.doesPathExist('D', 'D').pathExists).toBe(false);
+		expect(g.doesPathExist('D', 'E').pathExists).toBe(true);
+		expect(g.doesPathExist('D', 'F').pathExists).toBe(true);
 
-		expect(g.doesPathExist('E', 'A')).toBe(false);
-		expect(g.doesPathExist('E', 'B')).toBe(false);
-		expect(g.doesPathExist('E', 'C')).toBe(true);
-		expect(g.doesPathExist('E', 'D')).toBe(false);
-		expect(g.doesPathExist('E', 'E')).toBe(false);
-		expect(g.doesPathExist('E', 'F')).toBe(true);
+		expect(g.doesPathExist('E', 'A').pathExists).toBe(false);
+		expect(g.doesPathExist('E', 'B').pathExists).toBe(false);
+		expect(g.doesPathExist('E', 'C').pathExists).toBe(true);
+		expect(g.doesPathExist('E', 'D').pathExists).toBe(false);
+		expect(g.doesPathExist('E', 'E').pathExists).toBe(false);
+		expect(g.doesPathExist('E', 'F').pathExists).toBe(true);
 
-		expect(g.doesPathExist('F', 'A')).toBe(false);
-		expect(g.doesPathExist('F', 'B')).toBe(false);
-		expect(g.doesPathExist('F', 'C')).toBe(false);
-		expect(g.doesPathExist('F', 'D')).toBe(false);
-		expect(g.doesPathExist('F', 'E')).toBe(false);
-		expect(g.doesPathExist('F', 'F')).toBe(false);
+		expect(g.doesPathExist('F', 'A').pathExists).toBe(false);
+		expect(g.doesPathExist('F', 'B').pathExists).toBe(false);
+		expect(g.doesPathExist('F', 'C').pathExists).toBe(false);
+		expect(g.doesPathExist('F', 'D').pathExists).toBe(false);
+		expect(g.doesPathExist('F', 'E').pathExists).toBe(false);
+		expect(g.doesPathExist('F', 'F').pathExists).toBe(false);
 	});
 });
