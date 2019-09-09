@@ -72,22 +72,27 @@ class Graph {
 	}
 
 	doesPathExist(firstNode, secondNode) {
-		const path = [];
+		// https://stackoverflow.com/a/50575971
+		const pathQueue = [];
 		const visited = this.createVisitedObject();
 		const q = [];
 		visited[firstNode] = true;
 		q.push(firstNode);
+		pathQueue.push([firstNode]);
 		while (q.length) {
-			const node = q.pop();
-			path.push(node);
+			const node = q.shift();
+			const path = pathQueue.shift();
+			visited[node] = true;
+
 			const elements = this.AdjList.get(node);
 			if (elements.includes(secondNode)) {
 				return { path: [...path, secondNode], pathExists: true };
 			}
 			for (const elem of elements) {
 				if (!visited[elem]) {
+					pathQueue.push([...path, elem]);
+					q.push(elem);
 					visited[elem] = true;
-					q.unshift(elem);
 				}
 			}
 		}
