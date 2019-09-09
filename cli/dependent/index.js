@@ -2,6 +2,19 @@ const scanner = require('../../lib/scanner/cache/graphCache');
 const parseAliases = require('../utils/parseAliases/');
 const Graph = require('../../utils/Graph');
 const path = require('path');
+const printTree = require('../../utils/print-tree');
+
+const makeTree = pathsArray => {
+	const tree = { name: pathsArray[0], children: [] };
+	let ptr = tree;
+	pathsArray.splice(1).forEach(el => {
+		const child = { name: el, children: [] };
+		ptr.children.push(child);
+		ptr = child;
+	});
+
+	return tree;
+};
 
 const dependentAction = (args, opts) => {
 	const { source, target } = args;
@@ -82,7 +95,18 @@ const dependentAction = (args, opts) => {
 			return null;
 		}
 
-		return graph.doesPathExist(searchNode, targetNode);
+		const results = graph.doesPathExist(searchNode, targetNode);
+		if (results && results.pathExists) {
+			const tree = makeTree([...results.path]);
+			printTree(
+				tree,
+				(node, branch) => {
+					console.log(branch, node.name);
+				},
+				node => node.children
+			);
+		}
+		return results;
 	});
 };
 

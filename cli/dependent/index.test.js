@@ -86,22 +86,26 @@ describe('dependent command', () => {
 
 	it('should call scanner with the right params when no aliases are defined', done => {
 		delete testOptions.alias;
-		dependentAction({ source: '', target: 'src/' }, testOptions).then(
-			() => {
-				expect(scanner).lastCalledWith(
-					{
-						aliases: {},
-						excludedPatterns: ['node_modules/**'],
-						extensions: ['js'],
-						includedPatterns: ['**/*.js'],
-						projectRootPath: testRootPath,
-						targetDirectory: '.'
-					},
-					testOptions.rescan
-				);
-				done();
-			}
-		);
+		dependentAction(
+			{
+				source: `${testRootPath}/serverless/function1/index.js`,
+				target: ''
+			},
+			testOptions
+		).then(() => {
+			expect(scanner).lastCalledWith(
+				{
+					aliases: {},
+					excludedPatterns: ['node_modules/**'],
+					extensions: ['js'],
+					includedPatterns: ['**/*.js'],
+					projectRootPath: testRootPath,
+					targetDirectory: '.'
+				},
+				testOptions.rescan
+			);
+			done();
+		});
 	});
 
 	it('should resolve direct dependents', done => {
