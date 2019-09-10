@@ -8,8 +8,8 @@ const nayliasAction = require('./cli/naylias');
 prog.version(packageJSON.version);
 
 const GLOBAL_OPTIONS = [
-	['--targetDir <path>', 'Target scan directory', prog.STRING, '.'],
-	['--projectRoot <path>', 'Project root path', prog.STRING, process.cwd()],
+	['--target-dir <path>', 'Target scan directory', prog.STRING, '.'],
+	['--project-root <path>', 'Project root path', prog.STRING, process.cwd()],
 	['--ext <extensions>', 'File extensions to be matched', prog.LIST, 'js'],
 	[
 		'--incl <glob-patterns>',
