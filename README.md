@@ -23,6 +23,10 @@ You can use Chipper to find out:
 
 `$ chipper naylias my-utils --alias my-utils:src/utils/`
 
+> Does module X depend on module Y?
+
+`$ chipper dependent controllers/products/getProducts/index.js database.js`
+
 ## Installation
 
 You can install chipper globally via npm.
@@ -114,6 +118,18 @@ It's also possible to use the dependencies command with an alias.
 You can use naylias command to find out if any JavaScript module in your project is not making use of an alias definition.
 
 `chipper naylias my-awesome-services --alias my-awesome-services:/home/my-project/src/utils`
+
+### dependent
+You can use dependent command to find out if a module depends on another module. This dependency can be a direct one, or a nested one. Chipper will show you the graph if a dependency is found.
+
+```
+$ chipper dependent /controllers/products/getProducts/index.js database.js  --alias '~root':/Users/erselaker/api 
+
+/controllers/products/getProducts/index.js
+└─┬  /actions/products/fetchUnmappedProducts/index.js
+  └─┬  /actions/products/fetchUnmappedProducts/queries/selectUnmappedProducts.js
+    └──  /api/database.js
+```
 
 ## Limitations
 Currently only root level imports are supported.
