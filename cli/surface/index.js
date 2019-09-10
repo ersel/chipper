@@ -4,6 +4,7 @@ const createHTMLTable = require('../utils/createTable/');
 const parseAliases = require('../utils/parseAliases/');
 const scanner = require('../../lib/scanner/cache/scanCache');
 const openFile = require('../utils/openFile/');
+const disableConsole = require('../../utils/disableConsole');
 
 const scanResults = (scanData, searchPath) =>
 	scanData
@@ -26,6 +27,7 @@ const surfaceAction = (args, opts) => {
 	const aliases = opts.alias
 		? parseAliases(opts.alias, opts.projectRoot)
 		: {};
+	disableConsole(opts.silenceConsole);
 
 	return scanner(
 		{
