@@ -46,13 +46,13 @@ Chipper has 3 commands `surface`, `dependencies`, and `naylias`. A scan is done 
 All 3 chipper commands accepts the same set of options. All options have defaults set, so you only need to pass them if you need to change the default behaviour.
 
 ```
---targetDir        Target scan directory
+--target-dir        Target scan directory
 ```
 
 You can pass a relative path. Chipper will look for all files under that directory to scan for imports. By default this will be set to the current working directory.
 
 ```                                                         
---projectRoot      Project root path                                                             
+--project-root      Project root path                                                             
 ```
 
 You can set project root path by passing an absolute path. By default this will be set to the directory where you are running the `chipper` command from.
