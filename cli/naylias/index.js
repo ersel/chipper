@@ -1,11 +1,13 @@
 const scanner = require('../../lib/scanner/cache/scanCache');
 const parseAliases = require('../utils/parseAliases/');
+const disableConsole = require('../../utils/disableConsole');
 
 const nayliasAction = (args, opts) => {
 	const { alias } = args;
 	const aliases = opts.alias
 		? parseAliases(opts.alias, opts.projectRoot)
 		: {};
+	disableConsole(opts.silenceConsole);
 
 	if (!aliases[alias]) {
 		const errorMsg = `${alias} was not defined. Check --alias option.`;

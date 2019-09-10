@@ -36,6 +36,13 @@ const GLOBAL_OPTIONS = [
 		prog.BOOL,
 		false,
 		false
+	],
+	[
+		'--silence-console <boolean>',
+		'Disable all console messages',
+		prog.BOOL,
+		false,
+		false
 	]
 ];
 

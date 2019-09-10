@@ -3,6 +3,7 @@ const parseAliases = require('../utils/parseAliases/');
 const Graph = require('../../utils/Graph');
 const path = require('path');
 const printTree = require('../../utils/print-tree');
+const disableConsole = require('../../utils/disableConsole');
 
 const makeTree = pathsArray => {
 	const tree = { name: pathsArray[0], children: [] };
@@ -21,6 +22,7 @@ const dependentAction = (args, opts) => {
 	const aliases = opts.alias
 		? parseAliases(opts.alias, opts.projectRoot)
 		: {};
+	disableConsole(opts.silenceConsole);
 
 	return scanner(
 		{
