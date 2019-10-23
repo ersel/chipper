@@ -179,4 +179,46 @@ describe('Static Require Resolvers (CJS)', () => {
 		const imports = resolver(testModule);
 		expect(imports).toEqual([]);
 	});
+
+	it('should resolve non-global require', () => {
+		const testModule = `
+		  
+		  const xyz = () => {
+			  const x = require('some-module.js').ABC
+		  }
+		  
+		  module.exports = createDelivery;
+		  `;
+		const imports = resolver(testModule);
+		expect(imports).toEqual([
+			{
+				imports: [{ imported: '*', local: 'x' }],
+				path: 'ABC',
+				source: 'some-module.js',
+				type: 'commonjs'
+			}
+		]);
+	});
+
+	it('should resolve dynamic require', () => {
+		const testModule = `
+		 const y = () => { 
+		  const xyz = () => {
+			  const somePath = Math.random() > 0.5 ? './this.js' : './that.js';
+			  const x = require(somePath)({test: 1}).yoo.lol(1).ABC
+		  }
+		}
+		  
+		  module.exports = createDelivery;
+		  `;
+		const imports = resolver(testModule);
+		expect(imports).toEqual([
+			{
+				imports: [{ imported: '*', local: 'x' }],
+				path: '().yoo.lol().ABC',
+				source: '***dynamic***',
+				type: 'commonjs'
+			}
+		]);
+	});
 });
