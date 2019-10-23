@@ -159,7 +159,7 @@ const checkStaticRequireWithMemberExpressionsRecursively = node => {
 	) {
 		return {
 			path: '',
-			source: node.arguments[0].value
+			source: node.arguments[0].value || '***dynamic***'
 		};
 	}
 

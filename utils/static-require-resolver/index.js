@@ -1,5 +1,6 @@
 const acorn = require('acorn');
 const injectJSX = require('acorn-jsx/inject');
+const walk = require('acorn/dist/walk');
 const injectObjectSpread = require('acorn5-object-spread/inject');
 const checkStaticRequireWithMemberExpressionsRecursively = require('./checkMemberImports');
 const parseIdentifiers = require('./parseIdentifiers');
@@ -63,55 +64,61 @@ const resolver = (moduleContents, fileName) => {
 		ast.body = [];
 	}
 	const nodes = ast.body;
-	for (let j = 0; j < nodes.length; j += 1) {
-		const node = nodes[j];
-		let memberImport;
-		let source;
 
-		if (checkifVariableDeclaratorWithFunctionCall(node)) {
-			if (checkIfDefaultRequire(node)) {
-				source = {
-					source: node.declarations[0].init.arguments[0].value,
-					path: ''
-				};
-			} else {
-				memberImport = checkStaticRequireWithMemberExpressionsRecursively(
-					node.declarations[0].init
-				);
-				if (memberImport !== 'n/a') {
-					// todo: prepend . to path if it doesnt start with(
-					source = memberImport;
+	for (let j = 0; j < nodes.length; j += 1) {
+		const topLevelNode = nodes[j];
+		walk.full(topLevelNode, node => {
+			let memberImport;
+			let source;
+
+			if (checkifVariableDeclaratorWithFunctionCall(node)) {
+				if (checkIfDefaultRequire(node)) {
+					source = {
+						source:
+							node.declarations[0].init.arguments[0].value ||
+							'***dynamic***',
+						path: ''
+					};
+				} else {
+					memberImport = checkStaticRequireWithMemberExpressionsRecursively(
+						node.declarations[0].init
+					);
+					if (memberImport !== 'n/a') {
+						// todo: prepend . to path if it doesnt start with(
+						source = memberImport;
+					}
 				}
 			}
-		}
 
-		if (!source && checkIfSoleRequire(node)) {
-			source = {
-				source: node.expression.arguments[0].value,
-				path: ''
-			};
-			dependencies.push({
-				...source,
-				imports: [],
-				type: 'commonjs'
-			});
-		} else if (!source && checkIfExpression(node)) {
-			memberImport = checkStaticRequireWithMemberExpressionsRecursively(
-				node.expression
-			);
-			if (memberImport !== 'n/a') {
-				// todo: prepend . to path if it doesnt start with(
-				source = memberImport;
+			if (!source && checkIfSoleRequire(node)) {
+				source = {
+					source:
+						node.expression.arguments[0].value || '***dynamic***',
+					path: ''
+				};
 				dependencies.push({
 					...source,
 					imports: [],
 					type: 'commonjs'
 				});
+			} else if (!source && checkIfExpression(node)) {
+				memberImport = checkStaticRequireWithMemberExpressionsRecursively(
+					node.expression
+				);
+				if (memberImport !== 'n/a') {
+					// todo: prepend . to path if it doesnt start with(
+					source = memberImport;
+					dependencies.push({
+						...source,
+						imports: [],
+						type: 'commonjs'
+					});
+				}
+			} else if (source) {
+				const imports = parseIdentifiers(node.declarations[0].id);
+				dependencies.push({ ...source, imports, type: 'commonjs' });
 			}
-		} else if (source) {
-			const imports = parseIdentifiers(node.declarations[0].id);
-			dependencies.push({ ...source, imports, type: 'commonjs' });
-		}
+		});
 	}
 
 	return dependencies;
