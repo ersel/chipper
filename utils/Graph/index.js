@@ -19,8 +19,6 @@ class Graph {
 				const arr = this.AdjList.get(vertex);
 				if (!arr.includes(node)) {
 					arr.push(node);
-				} else {
-					throw new Error(`Can't add '${node}', it already exists`);
 				}
 			} else {
 				throw new Error(`Can't add non-existing vertex ->'${node}'`);
