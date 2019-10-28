@@ -43,6 +43,12 @@ const GLOBAL_OPTIONS = [
 		prog.BOOL,
 		false,
 		false
+	],
+	[
+		'--file-scan-parallelism',
+		'Number of files to scan at once',
+		prog.INTEGER,
+		50
 	]
 ];
 

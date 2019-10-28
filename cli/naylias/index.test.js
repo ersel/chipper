@@ -88,6 +88,7 @@ describe('naylias command', () => {
 			incl: ['**/*.js'],
 			excl: ['node_modules/**'],
 			alias: `my-utils:${PROJECT_ROOT}/src/utils`,
+			fileScanParallelism: 50,
 			rescan: true
 		};
 	});
@@ -99,6 +100,7 @@ describe('naylias command', () => {
 					aliases: { 'my-utils': `${PROJECT_ROOT}/src/utils` },
 					excludedPatterns: ['node_modules/**'],
 					extensions: ['js'],
+					fileScanParallelism: 50,
 					includedPatterns: ['**/*.js'],
 					projectRootPath: PROJECT_ROOT,
 					targetDirectory: '.'
