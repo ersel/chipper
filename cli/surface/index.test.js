@@ -65,6 +65,7 @@ describe('surface command', () => {
 			incl: ['**/*.js'],
 			excl: ['node_modules/**'],
 			alias: 'some-alias:/path/to/some-alias',
+			fileScanParallelism: 50,
 			rescan: true
 		};
 
@@ -78,6 +79,7 @@ describe('surface command', () => {
 					aliases: { 'some-alias': '/path/to/some-alias' },
 					excludedPatterns: ['node_modules/**'],
 					extensions: ['js'],
+					fileScanParallelism: 50,
 					includedPatterns: ['**/*.js'],
 					projectRootPath: process.cwd(),
 					targetDirectory: '.'
@@ -96,6 +98,7 @@ describe('surface command', () => {
 					aliases: {},
 					excludedPatterns: ['node_modules/**'],
 					extensions: ['js'],
+					fileScanParallelism: 50,
 					includedPatterns: ['**/*.js'],
 					projectRootPath: process.cwd(),
 					targetDirectory: '.'

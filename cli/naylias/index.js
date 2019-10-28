@@ -23,6 +23,7 @@ const nayliasAction = (args, opts) => {
 			includedPatterns: opts.incl,
 			excludedPatterns: opts.excl,
 			extensions: opts.ext,
+			fileScanParallelism: opts.fileScanParallelism,
 			aliases
 		},
 		opts.rescan
