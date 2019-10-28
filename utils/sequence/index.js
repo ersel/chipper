@@ -1,7 +1,13 @@
 const sequence = (tasks, fn) =>
 	tasks.reduce(
-		(promise, task) => promise.then(() => fn(task)),
-		Promise.resolve()
+		(promiseChain, currentTask) =>
+			promiseChain.then(chainResults =>
+				fn(currentTask).then(currentResult => [
+					...chainResults,
+					currentResult
+				])
+			),
+		Promise.resolve([])
 	);
 
 module.exports = sequence;
