@@ -45,7 +45,7 @@ const GLOBAL_OPTIONS = [
 		false
 	],
 	[
-		'--file-scan-parallelism',
+		'--file-scan-parallelism <number>',
 		'Number of files to scan at once',
 		prog.INTEGER,
 		50
