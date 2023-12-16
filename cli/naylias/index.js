@@ -45,6 +45,13 @@ const nayliasAction = (args, opts) => {
 				).length
 			}));
 
+		if (opts.outputFormat === 'json') {
+			// output JSON to stdout
+			console.log(JSON.stringify(results, null, 2));
+
+			return results;
+		}
+
 		results.forEach(({ sourceFile, numberOfImportsCanBeAliased }) =>
 			console.log(`${sourceFile} (${numberOfImportsCanBeAliased})`)
 		);

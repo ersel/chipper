@@ -79,6 +79,13 @@ const surfaceAction = (args, opts) => {
 			results = scanResults(scanData, searchTarget);
 		}
 
+		if (opts.outputFormat === 'json') {
+			// output JSON to stdout
+			console.log(JSON.stringify(results, null, 2));
+
+			return results;
+		}
+
 		if (results.length) {
 			const htmlReport = createHTMLTable(results, opts.projectRoot);
 			const fileTimeStamp = new Date().toISOString().substring(0, 16);
@@ -88,6 +95,8 @@ const surfaceAction = (args, opts) => {
 		} else {
 			console.log('No results found.');
 		}
+
+		return results;
 	});
 };
 

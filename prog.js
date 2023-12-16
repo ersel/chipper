@@ -49,6 +49,13 @@ const GLOBAL_OPTIONS = [
 		'Number of files to scan at once',
 		prog.INTEGER,
 		50
+	],
+	[
+		'--output-format <format>',
+		'return output in JSON format',
+		prog.STRING,
+		false,
+		false
 	]
 ];
 

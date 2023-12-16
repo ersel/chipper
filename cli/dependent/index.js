@@ -99,6 +99,14 @@ const dependentAction = (args, opts) => {
 		}
 
 		const results = graph.doesPathExist(searchNode, targetNode);
+
+		if (opts.outputFormat === 'json') {
+			// output JSON to stdout
+			console.log(JSON.stringify(results, null, 2));
+
+			return results;
+		}
+
 		if (results && results.pathExists) {
 			const tree = makeTree([...results.path]);
 			printTree(
@@ -109,6 +117,7 @@ const dependentAction = (args, opts) => {
 				node => node.children
 			);
 		}
+
 		return results;
 	});
 };
